@@ -3,33 +3,36 @@ package com.project.siiproject.feature.lecture.model;
 import com.project.siiproject.feature.user.model.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "LECTURES")
+@Table(name = "LECTURES",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"lecture_date", "path"})})
 public class Lecture {
 
     @Id
     @Column(name = "lecture_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotEmpty
+    @Column(unique = true)
     private String title;
-
     @NotEmpty
     private String topic;
-
     @NotEmpty
     private String lecturer;
+    @NotEmpty
+    @FutureOrPresent
+    @Column(name = "lecture_date")
     private LocalDateTime lectureDate;
-
-    @Min(1)
+    @Positive
+    @Column(name = "path")
     private int path;
-
     @ManyToMany(mappedBy = "lectures")
     private List<User> users;
 
