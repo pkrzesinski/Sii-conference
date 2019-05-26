@@ -1,4 +1,4 @@
-package com.project.siiproject.user.service;
+package com.project.siiproject.feature.user.service;
 
 import org.springframework.stereotype.Service;
 

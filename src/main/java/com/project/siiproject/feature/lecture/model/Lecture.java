@@ -1,11 +1,13 @@
-package com.project.siiproject.user.model;
+package com.project.siiproject.feature.lecture.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-public class User {
+@Table(name = "LECTURES")
+public class Lecture {
 
     @Id
     @Column(name = "id")

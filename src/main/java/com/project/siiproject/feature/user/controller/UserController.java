@@ -1,4 +1,4 @@
-package com.project.siiproject.user.controller;
+package com.project.siiproject.feature.user.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
