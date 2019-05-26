@@ -1,7 +1,45 @@
 package com.project.siiproject.feature.user.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.project.siiproject.feature.user.model.User;
+import com.project.siiproject.feature.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("api/v1/users")
 public class UserController {
+
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @GetMapping
+    public User getUserById(@PathVariable("id") Long id) {
+        return userService.getUserById(id);
+    }
+
+    @PostMapping
+    public User save(@RequestBody User user) {
+        return userService.save(user);
+    }
+
+    @PutMapping
+    public User update(@RequestBody User user) {
+        return userService.save(user);
+    }
+
+    @DeleteMapping
+    public void delete(@RequestBody User user) {
+        userService.delete(user);
+    }
 }
