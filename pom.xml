@@ -47,7 +47,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+    </dependencies>
 
 	<dependencyManagement>
 		<dependencies>
