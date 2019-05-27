@@ -32,6 +32,11 @@ public class User {
     public User() {
     }
 
+    public User(@NotEmpty String login, @Email @NotEmpty String email) {
+        this.login = login;
+        this.email = email;
+    }
+
     public void addLecture(Lecture lecture) {
         lectures.add(lecture);
     }

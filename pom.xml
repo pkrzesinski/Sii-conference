@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <vaadin.version>13.0.7</vaadin.version>
+        <vaadin.version>8.3.1</vaadin.version>
         <swagger.version>2.6.1</swagger.version>
     </properties>
 
@@ -37,7 +37,6 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-spring-boot-starter</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -47,11 +46,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-spring</artifactId>
-            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
