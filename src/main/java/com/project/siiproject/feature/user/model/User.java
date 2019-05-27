@@ -6,6 +6,7 @@ import com.project.siiproject.feature.lecture.model.Lecture;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,7 +14,6 @@ import java.util.List;
 public class User {
 
     @Id
-    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
@@ -23,18 +23,17 @@ public class User {
     @NotEmpty
     @Column(unique = true)
     private String email;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "USERS_TO_LECTURES",
-            joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "lecture_id"))
-    private List<Lecture> lectures;
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "lecture_id", referencedColumnName = "id"))
+    private List<Lecture> lectures = new ArrayList<>();
 
     public User() {
     }
 
-    public User(@NotEmpty String login, @Email @NotEmpty String email, List<Lecture> lectures) {
-        this.login = login;
-        this.email = email;
-        this.lectures = lectures;
+    public void addLecture(Lecture lecture) {
+        lectures.add(lecture);
     }
 
     public Long getId() {
@@ -72,8 +71,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
+                "login='" + login + '\'' +
                 ", email='" + email + '\'' +
                 ", lectures=" + lectures +
                 '}';

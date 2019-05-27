@@ -27,6 +27,10 @@ public class LectureService {
         return lectureRepository.getOne(id);
     }
 
+    public Lecture getLectureByTitle(String title) {
+        return lectureRepository.findByTitle(title);
+    }
+
     public Lecture save(final Lecture lecture) {
         return lectureRepository.save(lecture);
     }

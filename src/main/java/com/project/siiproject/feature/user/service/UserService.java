@@ -43,7 +43,7 @@ public class UserService {
     }
 
     public User update(User user) {
-        if (checkIfUserLoginWithoutChange(user) && checkIfEmailNotTaken(user)) {
+        if (checkIfUserLoginWithoutChange(user)) {
             return userRepository.save(user);
         }
         throw new IllegalStateException();
@@ -59,10 +59,6 @@ public class UserService {
 
     private boolean checkIfUserLoginWithoutChange(User user) {
         return getUserById(user.getId()).getLogin().equals(user.getLogin());
-    }
-
-    private boolean checkIfEmailNotTaken(User user) {
-        return getUserByEmail(user.getEmail()) == null;
     }
 }
 

@@ -1,15 +1,17 @@
 package com.project.siiproject.feature.lecture.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.siiproject.feature.user.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "LECTURES",
@@ -18,7 +20,6 @@ import java.util.List;
 public class Lecture {
 
     @Id
-    @Column(name = "lecture_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
@@ -30,17 +31,11 @@ public class Lecture {
     @Positive
     @Column(name = "path")
     private int path;
+    @JsonIgnore
     @ManyToMany(mappedBy = "lectures")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     public Lecture() {
-    }
-
-    public Lecture(@NotEmpty String title, LocalDateTime lectureDate, @Min(1) int path, List<User> users) {
-        this.title = title;
-        this.lectureDate = lectureDate;
-        this.path = path;
-        this.users = users;
     }
 
     public Long getId() {
@@ -82,11 +77,12 @@ public class Lecture {
     @Override
     public String toString() {
         return "Lecture{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", lectureDate=" + lectureDate +
                 ", path=" + path +
-                ", users=" + users +
+                ", users=" + (users != null ? users.stream()
+                .map(User::getLogin)
+                .collect(Collectors.joining(", ")) : "") +
                 '}';
     }
 }
