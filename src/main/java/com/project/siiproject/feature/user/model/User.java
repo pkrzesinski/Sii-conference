@@ -15,6 +15,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
+    @Column(unique = true)
+    private String login;
+    @NotEmpty
+    private String password;
+    @NotEmpty
     @Column(length = 64)
     private String name;
     @NotEmpty
@@ -32,7 +37,9 @@ public class User {
     public User() {
     }
 
-    public User(@NotEmpty String name, @NotEmpty String surname, @Email String email, List<Lecture> lectures) {
+    public User(@NotEmpty String login, @NotEmpty String password, @NotEmpty String name, @NotEmpty String surname, @Email @NotEmpty String email, List<Lecture> lectures) {
+        this.login = login;
+        this.password = password;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -41,6 +48,22 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -79,6 +102,8 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
