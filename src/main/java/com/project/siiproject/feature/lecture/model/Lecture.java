@@ -39,7 +39,8 @@ public class Lecture {
     public Lecture() {
     }
 
-    public Lecture(@NotEmpty String title, @NotEmpty String topic, @NotEmpty String lecturer, LocalDateTime lectureDate, @Min(1) int path, List<User> users) {
+    public Lecture(@NotEmpty String title, @NotEmpty String topic, @NotEmpty String lecturer, LocalDateTime lectureDate,
+                   @Positive int path, List<User> users) {
         this.title = title;
         this.topic = topic;
         this.lecturer = lecturer;
