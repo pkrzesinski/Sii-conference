@@ -23,15 +23,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User save(final User user) {
-        if (checkIfUserAlreadyInDatabase(user)) {
-            throw new IllegalStateException();
-        }
-        return userRepository.save(user);
-    }
-
-    public void delete(final User user) {
-        userRepository.delete(user);
+    public User getUserById(final Long id) {
+        return userRepository.getOne(id);
     }
 
     public User getUserByEmail(final String email) {
@@ -42,10 +35,34 @@ public class UserService {
         return userRepository.findByLogin(login);
     }
 
-    private boolean checkIfUserAlreadyInDatabase(User user) {
-        if (getUserByEmail(user.getEmail()) != null || getUserByLogin(user.getLogin()) != null) {
-            return true;
+    public User save(final User user) {
+        if (checkIfUserAlreadyInDatabase(user)) {
+            throw new IllegalStateException();
         }
-        return false;
+        return userRepository.save(user);
+    }
+
+    public User update(User user) {
+        if (checkIfUserLoginWithoutChange(user) && checkIfEmailNotTaken(user)) {
+            return userRepository.save(user);
+        }
+        throw new IllegalStateException();
+    }
+
+    public void delete(final User user) {
+        userRepository.delete(user);
+    }
+
+    private boolean checkIfUserAlreadyInDatabase(User user) {
+        return getUserByEmail(user.getEmail()) != null || getUserByLogin(user.getLogin()) != null;
+    }
+
+    private boolean checkIfUserLoginWithoutChange(User user) {
+        return getUserById(user.getId()).getLogin().equals(user.getLogin());
+    }
+
+    private boolean checkIfEmailNotTaken(User user) {
+        return getUserByEmail(user.getEmail()) == null;
     }
 }
+

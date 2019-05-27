@@ -40,7 +40,7 @@ public class UserController {
 
     @PutMapping
     public User update(@RequestBody User user) {
-        return userService.save(user);
+        return userService.update(user);
     }
 
     @DeleteMapping
