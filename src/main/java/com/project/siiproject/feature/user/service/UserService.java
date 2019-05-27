@@ -25,9 +25,9 @@ public class UserService {
 
     public User save(final User user) {
         if (checkIfUserAlreadyInDatabase(user)) {
-            return userRepository.save(user);
+            throw new IllegalStateException();
         }
-        throw new IllegalStateException();
+        return userRepository.save(user);
     }
 
     public void delete(final User user) {

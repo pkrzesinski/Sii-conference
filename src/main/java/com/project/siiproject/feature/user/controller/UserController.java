@@ -30,7 +30,12 @@ public class UserController {
 
     @PostMapping
     public User save(@RequestBody User user) {
-        return userService.save(user);
+        try {
+            return userService.save(user);
+        } catch (IllegalStateException e) {
+            System.out.println("User already exist: " + e);
+        }
+        return null;
     }
 
     @PutMapping
