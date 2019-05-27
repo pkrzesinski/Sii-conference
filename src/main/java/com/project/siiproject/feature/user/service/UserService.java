@@ -23,15 +23,29 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUserById(final Long id) {
-        return userRepository.getOne(id);
-    }
-
     public User save(final User user) {
-        return userRepository.save(user);
+        if (checkIfUserAlreadyInDatabase(user)) {
+            return userRepository.save(user);
+        }
+        throw new IllegalStateException();
     }
 
     public void delete(final User user) {
         userRepository.delete(user);
+    }
+
+    public User getUserByEmail(final String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public User getUserByLogin(final String login) {
+        return userRepository.findByLogin(login);
+    }
+
+    private boolean checkIfUserAlreadyInDatabase(User user) {
+        if (getUserByEmail(user.getEmail()) != null || getUserByLogin(user.getLogin()) != null) {
+            return true;
+        }
+        return false;
     }
 }
