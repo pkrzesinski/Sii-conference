@@ -15,11 +15,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
-    @Column(length = 64)
-    private String name;
-    @NotEmpty
-    @Column(length = 64)
-    private String surname;
+    @Column(unique = true)
+    private String login;
     @Email
     @NotEmpty
     @Column(unique = true)
@@ -32,9 +29,8 @@ public class User {
     public User() {
     }
 
-    public User(@NotEmpty String name, @NotEmpty String surname, @Email String email, List<Lecture> lectures) {
-        this.name = name;
-        this.surname = surname;
+    public User(@NotEmpty String login, @Email @NotEmpty String email, List<Lecture> lectures) {
+        this.login = login;
         this.email = email;
         this.lectures = lectures;
     }
@@ -43,20 +39,16 @@ public class User {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLogin() {
+        return login;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getEmail() {
@@ -79,8 +71,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
+                ", login='" + login + '\'' +
                 ", email='" + email + '\'' +
                 ", lectures=" + lectures +
                 '}';
