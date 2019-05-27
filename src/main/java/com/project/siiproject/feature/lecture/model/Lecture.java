@@ -1,51 +1,41 @@
 package com.project.siiproject.feature.lecture.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.siiproject.feature.user.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "LECTURES",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"lecture_date", "path"})})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Lecture {
 
     @Id
-    @Column(name = "lecture_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
     @Column(unique = true)
     private String title;
-    @NotEmpty
-    private String topic;
-    @NotEmpty
-    private String lecturer;
-    @NotEmpty
     @FutureOrPresent
     @Column(name = "lecture_date")
     private LocalDateTime lectureDate;
     @Positive
     @Column(name = "path")
     private int path;
+    @JsonIgnore
     @ManyToMany(mappedBy = "lectures")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     public Lecture() {
-    }
-
-    public Lecture(@NotEmpty String title, @NotEmpty String topic, @NotEmpty String lecturer, LocalDateTime lectureDate, @Min(1) int path, List<User> users) {
-        this.title = title;
-        this.topic = topic;
-        this.lecturer = lecturer;
-        this.lectureDate = lectureDate;
-        this.path = path;
-        this.users = users;
     }
 
     public Long getId() {
@@ -58,22 +48,6 @@ public class Lecture {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public String getLecturer() {
-        return lecturer;
-    }
-
-    public void setLecturer(String lecturer) {
-        this.lecturer = lecturer;
     }
 
     public LocalDateTime getLectureDate() {
@@ -103,13 +77,12 @@ public class Lecture {
     @Override
     public String toString() {
         return "Lecture{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", topic='" + topic + '\'' +
-                ", lecturer='" + lecturer + '\'' +
+                "title='" + title + '\'' +
                 ", lectureDate=" + lectureDate +
                 ", path=" + path +
-                ", users=" + users +
+                ", users=" + (users != null ? users.stream()
+                .map(User::getLogin)
+                .collect(Collectors.joining(", ")) : "") +
                 '}';
     }
 }

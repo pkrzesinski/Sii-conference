@@ -1,5 +1,7 @@
 package com.project.siiproject.feature.user.controller;
 
+import com.project.siiproject.feature.lecture.model.Lecture;
+import com.project.siiproject.feature.lecture.service.LectureService;
 import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final LectureService lectureService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, LectureService lectureService) {
         this.userService = userService;
+        this.lectureService = lectureService;
     }
 
     @GetMapping
@@ -36,6 +40,13 @@ public class UserController {
             System.out.println("User already exist: " + e);
         }
         return null;
+    }
+
+    @PostMapping("/add-lecture/{title}")
+    public void addLecture(@RequestBody User user, @PathVariable String title) {
+        Lecture lecture = lectureService.getLectureByTitle(title);
+        user.getLectures().add(lecture);
+        userService.update(user);
     }
 
     @PutMapping
