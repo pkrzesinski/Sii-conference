@@ -1,5 +1,6 @@
 package com.project.siiproject.feature.lecture.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.siiproject.feature.user.model.User;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "LECTURES",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"lecture_date", "path"})})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Lecture {
 
     @Id
@@ -22,11 +24,6 @@ public class Lecture {
     @NotEmpty
     @Column(unique = true)
     private String title;
-    @NotEmpty
-    private String topic;
-    @NotEmpty
-    private String lecturer;
-    @NotEmpty
     @FutureOrPresent
     @Column(name = "lecture_date")
     private LocalDateTime lectureDate;
@@ -39,10 +36,8 @@ public class Lecture {
     public Lecture() {
     }
 
-    public Lecture(@NotEmpty String title, @NotEmpty String topic, @NotEmpty String lecturer, LocalDateTime lectureDate, @Min(1) int path, List<User> users) {
+    public Lecture(@NotEmpty String title, LocalDateTime lectureDate, @Min(1) int path, List<User> users) {
         this.title = title;
-        this.topic = topic;
-        this.lecturer = lecturer;
         this.lectureDate = lectureDate;
         this.path = path;
         this.users = users;
@@ -58,22 +53,6 @@ public class Lecture {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public String getLecturer() {
-        return lecturer;
-    }
-
-    public void setLecturer(String lecturer) {
-        this.lecturer = lecturer;
     }
 
     public LocalDateTime getLectureDate() {
@@ -105,8 +84,6 @@ public class Lecture {
         return "Lecture{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", topic='" + topic + '\'' +
-                ", lecturer='" + lecturer + '\'' +
                 ", lectureDate=" + lectureDate +
                 ", path=" + path +
                 ", users=" + users +
