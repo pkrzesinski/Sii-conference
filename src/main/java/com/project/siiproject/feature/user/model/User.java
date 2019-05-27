@@ -1,5 +1,6 @@
 package com.project.siiproject.feature.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.siiproject.feature.lecture.model.Lecture;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
@@ -21,7 +23,7 @@ public class User {
     @NotEmpty
     @Column(unique = true)
     private String email;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USERS_TO_LECTURES",
             joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "lecture_id"))
     private List<Lecture> lectures;

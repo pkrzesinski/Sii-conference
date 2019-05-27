@@ -27,11 +27,42 @@ public class UserService {
         return userRepository.getOne(id);
     }
 
+    public User getUserByEmail(final String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public User getUserByLogin(final String login) {
+        return userRepository.findByLogin(login);
+    }
+
     public User save(final User user) {
+        if (checkIfUserAlreadyInDatabase(user)) {
+            throw new IllegalStateException();
+        }
         return userRepository.save(user);
+    }
+
+    public User update(User user) {
+        if (checkIfUserLoginWithoutChange(user) && checkIfEmailNotTaken(user)) {
+            return userRepository.save(user);
+        }
+        throw new IllegalStateException();
     }
 
     public void delete(final User user) {
         userRepository.delete(user);
     }
+
+    private boolean checkIfUserAlreadyInDatabase(User user) {
+        return getUserByEmail(user.getEmail()) != null || getUserByLogin(user.getLogin()) != null;
+    }
+
+    private boolean checkIfUserLoginWithoutChange(User user) {
+        return getUserById(user.getId()).getLogin().equals(user.getLogin());
+    }
+
+    private boolean checkIfEmailNotTaken(User user) {
+        return getUserByEmail(user.getEmail()) == null;
+    }
 }
+
