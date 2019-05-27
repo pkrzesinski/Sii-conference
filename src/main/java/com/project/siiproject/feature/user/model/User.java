@@ -17,14 +17,6 @@ public class User {
     @NotEmpty
     @Column(unique = true)
     private String login;
-    @NotEmpty
-    private String password;
-    @NotEmpty
-    @Column(length = 64)
-    private String name;
-    @NotEmpty
-    @Column(length = 64)
-    private String surname;
     @Email
     @NotEmpty
     @Column(unique = true)
@@ -37,11 +29,8 @@ public class User {
     public User() {
     }
 
-    public User(@NotEmpty String login, @NotEmpty String password, @NotEmpty String name, @NotEmpty String surname, @Email @NotEmpty String email, List<Lecture> lectures) {
+    public User(@NotEmpty String login, @Email @NotEmpty String email, List<Lecture> lectures) {
         this.login = login;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
         this.email = email;
         this.lectures = lectures;
     }
@@ -50,36 +39,16 @@ public class User {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getLogin() {
         return login;
     }
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
     public String getEmail() {
@@ -103,9 +72,6 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
                 ", lectures=" + lectures +
                 '}';
