@@ -21,7 +21,7 @@ public class MainUI extends UI {
 
     private HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
 
-    private Grid<Lecture> grid = new Grid<>(Lecture.class);
+    private Grid<Lecture> grid = new Grid<>();
     private LoginUser loginUser;
 
     @Autowired
@@ -35,10 +35,16 @@ public class MainUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+
         grid.setSizeFull();
         grid.setItems(lectureService.getAllLectures());
-        grid.setColumns("path", "title");
-        grid.setDescription("Konferencja 01-02.06.2019");
+        grid.addColumn(Lecture::getLectureDate).setCaption("Data wykładu");
+        grid.addColumn(Lecture::getPath).setCaption("Ścieżka");
+        grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu");
+
+        grid.asSingleSelect().addValueChangeListener(event -> {
+            Lecture selectedLecture = event.getValue();
+        });
 
         loginUser.setSizeFull();
 

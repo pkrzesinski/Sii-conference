@@ -49,6 +49,7 @@ public class LoginUser extends VerticalLayout implements View {
     }
 
     private void addForm() {
+
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setSpacing(true);
 
