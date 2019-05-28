@@ -23,7 +23,7 @@ public class User {
     @NotEmpty
     @Column(unique = true)
     private String email;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USERS_TO_LECTURES",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "lecture_id", referencedColumnName = "id"))
