@@ -2,6 +2,7 @@ package com.project.siiproject.vaadin;
 
 import com.project.siiproject.feature.user.service.UserService;
 import com.vaadin.navigator.View;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -62,10 +63,13 @@ public class LoginUser extends VerticalLayout implements View {
         addButton.addClickListener(clickEvent -> {
             try {
                 userService.getUserByLoginAndEmail(login.getValue(), email.getValue());
-                VaadinSession.getCurrent().getSession();
+                VaadinSession.getCurrent().setAttribute("user", login.getValue());
+                getUI().getNavigator().navigateTo(SecurePage.VIEW_NAME);
+//                Page.getCurrent().setUriFragment(SecurePage.VIEW_NAME);
                 Notification notification = Notification.show("Użytkownik zalogowany");
             } catch (IllegalStateException e) {
-                Notification notification = Notification.show("Błąd logowania, sprawdź legin i/lub email.");
+                Notification notification = Notification.show("Błąd logowania, sprawdź legin i/lub email.",
+                        Notification.Type.ERROR_MESSAGE);
             }
 
             login

@@ -50,6 +50,7 @@ public class MainUI extends UI {
 
         Navigator navigator = new Navigator(this, splitPanel);
         navigator.addView(LoginUser.VIEW_NAME, new LoginUser());
+        navigator.addView(SecurePage.VIEW_NAME, new SecurePage());
 //        navigator.setErrorView(new ErrorView());
         navigator.addProvider(viewProvider);
     }
