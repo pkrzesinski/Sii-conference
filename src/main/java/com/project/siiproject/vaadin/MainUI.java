@@ -12,7 +12,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@SpringUI
+@SpringUI(path = "")
 public class MainUI extends UI {
 
     private UserService userService;

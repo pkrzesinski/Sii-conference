@@ -30,7 +30,7 @@ public class SecurePage extends VerticalLayout implements View {
         setupLayout();
         addHeader();
 
-        currentUser = new Label("Obecyny użytkownik");
+        currentUser = new Label("Obecny użytkownik");
         logout = new Button("Logout");
         logout.addStyleName(ValoTheme.BUTTON_DANGER);
 
@@ -42,7 +42,7 @@ public class SecurePage extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
                 getUI().getNavigator().removeView(SecurePage.VIEW_NAME);
                 VaadinSession.getCurrent().setAttribute("user", null);
-                Page.getCurrent().setUriFragment("");
+                getUI().getNavigator().navigateTo("");
             }
         });
     }

@@ -1,8 +1,8 @@
 package com.project.siiproject.vaadin;
 
+import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
 import com.vaadin.navigator.View;
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -54,13 +54,22 @@ public class LoginUser extends VerticalLayout implements View {
 
         TextField login = new TextField("Login");
         TextField email = new TextField("Email");
-        Button addButton = new Button("Zaloguj");
-        addButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
-        formLayout.addComponents(login, email, addButton);
+        HorizontalSplitPanel split = new HorizontalSplitPanel();
+
+        Button loginButton = new Button("Zaloguj");
+        loginButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+
+        Button addUserButton = new Button("Dodaj użytkownika");
+        addUserButton.addStyleNames(ValoTheme.BUTTON_PRIMARY);
+
+        split.setFirstComponent(loginButton);
+        split.setSecondComponent(addUserButton);
+
+        formLayout.addComponents(login, email, split);
         layout.addComponent(formLayout);
 
-        addButton.addClickListener(clickEvent -> {
+        loginButton.addClickListener(clickEvent -> {
             try {
                 userService.getUserByLoginAndEmail(login.getValue(), email.getValue());
                 VaadinSession.getCurrent().setAttribute("user", login.getValue());
@@ -72,8 +81,20 @@ public class LoginUser extends VerticalLayout implements View {
                         Notification.Type.ERROR_MESSAGE);
             }
 
-            login
-                    .clear();
+            login.clear();
+            email.clear();
+            login.focus();
+        });
+
+        addUserButton.addClickListener(clickEvent -> {
+            try {
+                userService.save(new User(login.getValue(), email.getValue()));
+                Notification notification = Notification.show("Użytkownik o loginie " + login.getValue() + " i email + "
+                        + email.getValue() + " został pomyślnie zapisany");
+            } catch (IllegalStateException e) {
+                Notification.show("Użytkownik o podanym loginie i/lub email jest już zarejestrowany.", Notification.Type.ERROR_MESSAGE);
+            }
+            login.clear();
             email.clear();
             login.focus();
         });
