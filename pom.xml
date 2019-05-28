@@ -59,6 +59,11 @@
             <version>2.9.2</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.vaadin.spring.extensions</groupId>
+            <artifactId>vaadin-spring-ext-core</artifactId>
+            <version>0.0.7.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

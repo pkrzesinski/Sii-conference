@@ -1,40 +1,37 @@
 package com.project.siiproject.vaadin;
 
-import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
-import com.vaadin.server.VaadinRequest;
+import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.spring.annotation.PrototypeScope;
 
-import javax.validation.ConstraintViolationException;
-
-@SpringUI(path = "/login")
-public class LoginUser extends UI {
+@PrototypeScope
+@SpringView(name = LoginUser.VIEW_NAME)
+public class LoginUser extends VerticalLayout implements View {
+    public static final String VIEW_NAME = "login";
 
     private VerticalLayout layout;
-
     private UserService userService;
+
+    public LoginUser() {
+        setupLayout();
+        addHeader();
+        addForm();
+    }
 
     @Autowired
     public LoginUser(UserService userService) {
         this.userService = userService;
     }
 
-    @Override
-    protected void init(VaadinRequest vaadinRequest) {
-        setupLayout();
-        addHeader();
-        addForm();
-        addButtonAction();
-    }
-
     private void setupLayout() {
         layout = new VerticalLayout();
         layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-        setContent(layout);
+        addComponent(layout);
     }
 
     private void addHeader() {
@@ -53,7 +50,7 @@ public class LoginUser extends UI {
         Button addButton = new Button("Zaloguj");
         addButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
-        formLayout.addComponents( login, email, addButton);
+        formLayout.addComponents(login, email, addButton);
         layout.addComponent(formLayout);
 
         addButton.addClickListener(clickEvent -> {
@@ -70,11 +67,5 @@ public class LoginUser extends UI {
             email.clear();
             login.focus();
         });
-
     }
-
-    private void addButtonAction() {
-
-    }
-
 }
