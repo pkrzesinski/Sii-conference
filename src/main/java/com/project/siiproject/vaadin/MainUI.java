@@ -9,13 +9,8 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.*;
-import com.vaadin.ui.renderers.LocalDateTimeRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 @SpringUI
 public class MainUI extends UI {
@@ -25,24 +20,21 @@ public class MainUI extends UI {
     private final SpringViewProvider viewProvider;
 
     private HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
-    private LoginUser loginUser;
 
     private Grid<Lecture> grid = new Grid<>(Lecture.class);
-
-   ;
+    private LoginUser loginUser;
 
     @Autowired
-    public MainUI(SpringViewProvider viewProvider, UserService userService, LectureService lectureService) {
+    public MainUI(SpringViewProvider viewProvider, UserService userService, LectureService lectureService,
+                  LoginUser loginUser) {
         this.viewProvider = viewProvider;
         this.userService = userService;
         this.lectureService = lectureService;
-
+        this.loginUser = loginUser;
     }
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        LoginUser loginUser = new LoginUser();
-
         grid.setSizeFull();
         grid.setItems(lectureService.getAllLectures());
         grid.setColumns("path", "title");

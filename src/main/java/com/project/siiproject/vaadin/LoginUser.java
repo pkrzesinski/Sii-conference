@@ -9,6 +9,8 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.annotation.PrototypeScope;
 
+import javax.annotation.PostConstruct;
+
 @PrototypeScope
 @SpringView(name = LoginUser.VIEW_NAME)
 public class LoginUser extends VerticalLayout implements View {
@@ -18,14 +20,18 @@ public class LoginUser extends VerticalLayout implements View {
     private UserService userService;
 
     public LoginUser() {
-        setupLayout();
-        addHeader();
-        addForm();
     }
 
     @Autowired
     public LoginUser(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostConstruct
+    private void init() {
+        setupLayout();
+        addHeader();
+        addForm();
     }
 
     private void setupLayout() {
