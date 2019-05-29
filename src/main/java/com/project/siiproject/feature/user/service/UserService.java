@@ -35,6 +35,14 @@ public class UserService {
         return userRepository.findByLogin(login);
     }
 
+    public User getUserByLoginAndEmail(final String login, final String email) {
+        User user = userRepository.findByLoginAndEmail(login, email);
+        if (user != null) {
+            return user;
+        } else
+            throw new IllegalStateException();
+    }
+
     public User save(final User user) {
         if (checkIfUserAlreadyInDatabase(user)) {
             throw new IllegalStateException();

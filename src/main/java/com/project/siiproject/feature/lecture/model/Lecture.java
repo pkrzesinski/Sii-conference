@@ -32,7 +32,7 @@ public class Lecture {
     @Column(name = "path")
     private int path;
     @JsonIgnore
-    @ManyToMany(mappedBy = "lectures")
+    @ManyToMany(mappedBy = "lectures", fetch = FetchType.EAGER)
     private List<User> users = new ArrayList<>();
 
     public Lecture() {

@@ -23,13 +23,18 @@ public class User {
     @NotEmpty
     @Column(unique = true)
     private String email;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USERS_TO_LECTURES",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "lecture_id", referencedColumnName = "id"))
     private List<Lecture> lectures = new ArrayList<>();
 
     public User() {
+    }
+
+    public User(@NotEmpty String login, @Email @NotEmpty String email) {
+        this.login = login;
+        this.email = email;
     }
 
     public void addLecture(Lecture lecture) {
