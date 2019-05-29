@@ -47,6 +47,7 @@ public class MainUI extends UI {
         grid.setItems(lectureService.getAllLectures());
         grid.addColumn(lecture -> lecture.getLectureDate().format(formatter)).setCaption("Data wykładu").setWidthUndefined();
         grid.addColumn(Lecture::getPath).setCaption("Ścieżka").setWidthUndefined();
+        grid.addColumn(lecture -> lecture.getUsers().size() + "/5").setCaption("Ilość uczestników").setWidthUndefined();
         grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined();
 
         leftView.addComponents(header, grid);

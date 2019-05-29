@@ -89,7 +89,6 @@ public class SecurePage extends VerticalLayout implements View {
                     }
                 });
             }
-
         });
 
         Button buttonAddLectureToUser = new Button("Dodaj wykład");
@@ -110,7 +109,7 @@ public class SecurePage extends VerticalLayout implements View {
                         VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
                         emailSender.sendEmail(user.getEmail(), "Zapisy na konferencję 01-02.06.2019",
                                 "Serdecznie zapraszamy na wykład: " + selectedLecture.getTitle() + ", dnia" +
-                                selectedLecture.getLectureDate().format(formatter) + "\nDo zobaczenia!");
+                                        selectedLecture.getLectureDate().format(formatter) + "\nDo zobaczenia!");
                         mainGrid.deselectAll();
                         Page.getCurrent().reload();
 
@@ -178,5 +177,4 @@ public class SecurePage extends VerticalLayout implements View {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
-
 }

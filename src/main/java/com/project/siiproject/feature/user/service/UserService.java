@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -57,13 +56,15 @@ public class UserService {
                 .filter(l -> l.getLectureDate().isEqual(lectureTime))
                 .findFirst();
 
-        if (lectureOptional.isPresent() || lectureAtTheSameTime.isPresent()) {
+        if ( lectureOptional.isPresent() || lectureAtTheSameTime.isPresent() || isLectureFull(lecture)){
             throw new IllegalStateException();
-        } else {
+        } else{
             user.getLectures().add(lecture);
             return userRepository.save(user);
         }
     }
+
+
 
     public User save(final User user) {
         if (isUserAlreadyInDatabase(user)) {
@@ -107,5 +108,11 @@ public class UserService {
         }
         return false;
     }
-}
 
+    private boolean isLectureFull(Lecture lecture) {
+        if (lecture.getUsers().size() >= 5) {
+            return true;
+        }
+        return false;
+    }
+}
