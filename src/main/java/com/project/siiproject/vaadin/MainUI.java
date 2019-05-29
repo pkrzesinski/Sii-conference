@@ -41,8 +41,6 @@ public class MainUI extends UI {
         grid.addColumn(Lecture::getPath).setCaption("Ścieżka");
         grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu");
 
-
-
         CssLayout viewContainer = new CssLayout();
 
         mainLayout.addComponents(grid, viewContainer);
@@ -55,7 +53,6 @@ public class MainUI extends UI {
 //       navigator.setErrorView(new ErrorView());
         navigator.addProvider(viewProvider);
     }
-
 
 //    private class ErrorView extends VerticalLayout implements View {
 //

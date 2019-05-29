@@ -9,6 +9,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.spring.annotation.PrototypeScope;
 
+import javax.validation.ConstraintViolationException;
+
 @PrototypeScope
 @SpringView
 public class LoginUser extends VerticalLayout implements View {
@@ -77,6 +79,8 @@ public class LoginUser extends VerticalLayout implements View {
             } catch (IllegalStateException e) {
                 Notification notification = Notification.show("Błąd logowania, sprawdź login i/lub email.",
                         Notification.Type.ERROR_MESSAGE);
+            }catch (ConstraintViolationException e) {
+                Notification.show("Dane wpisane niepoprawnie !", Notification.Type.ERROR_MESSAGE);
             }
             login.clear();
             email.clear();
@@ -90,6 +94,8 @@ public class LoginUser extends VerticalLayout implements View {
                         + email.getValue() + " został pomyślnie zapisany");
             } catch (IllegalStateException e) {
                 Notification.show("Użytkownik o podanym loginie i/lub email jest już zarejestrowany.", Notification.Type.ERROR_MESSAGE);
+            } catch (ConstraintViolationException e) {
+                Notification.show("Dane wpisane niepoprawnie !", Notification.Type.ERROR_MESSAGE);
             }
             login.clear();
             email.clear();
