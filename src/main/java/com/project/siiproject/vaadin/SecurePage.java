@@ -12,6 +12,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.spring.annotation.PrototypeScope;
 
+import javax.validation.ConstraintViolationException;
 import java.time.format.DateTimeFormatter;
 
 @PrototypeScope
@@ -23,6 +24,7 @@ public class SecurePage extends VerticalLayout implements View {
     private User user;
     private VerticalLayout layout = new VerticalLayout();
     private Grid<Lecture> grid = new Grid<>();
+    private TextField email = new TextField("Email");
 
     public SecurePage(UserService userService, Grid<Lecture> mainGrid) {
         setupLayout();
@@ -35,26 +37,39 @@ public class SecurePage extends VerticalLayout implements View {
         formLayout.setSpacing(true);
         formLayout.setSizeFull();
 
-        TextField login = new TextField("Login");
-        TextField email = new TextField("Email");
-        formLayout.addComponents(login, email);
+        Button buttonChangeEmail = new Button("Zmień email");
+        buttonChangeEmail.addStyleName(ValoTheme.BUTTON_PRIMARY);
+
+        buttonChangeEmail.addClickListener(clickEvent -> {
+            try {
+                user.setEmail(email.getValue());
+                userService.update(user);
+                Notification.show("Adres email został zmienniony");
+            } catch (IllegalStateException e) {
+                Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
+            } catch (ConstraintViolationException e) {
+                Notification.show("Błędny format !", Notification.Type.ERROR_MESSAGE);
+            }
+        });
+
+        formLayout.addComponents(email, buttonChangeEmail);
 
         HorizontalLayout buttonsUnderGrid = new HorizontalLayout();
 
-        Button removeLecture = new Button("Usuń");
-        removeLecture.addStyleName(ValoTheme.BUTTON_DANGER);
+        Button buttonRemoveLecture = new Button("Usuń");
+        buttonRemoveLecture.addStyleName(ValoTheme.BUTTON_DANGER);
 
-        Button addLectureToUser = new Button("Dodaj wykład");
-        addLectureToUser.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        Button buttonAddLectureToUser = new Button("Dodaj wykład");
+        buttonAddLectureToUser.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
-        buttonsUnderGrid.addComponents(addLectureToUser, removeLecture);
+        buttonsUnderGrid.addComponents(buttonAddLectureToUser, buttonRemoveLecture);
 
         mainGrid.asSingleSelect().addValueChangeListener(event -> {
             Lecture selectedLecture = event.getValue();
 
             if (selectedLecture != null) {
 
-                addLectureToUser.addClickListener(clickEvent -> {
+                buttonAddLectureToUser.addClickListener(clickEvent -> {
 
                     User userLectureToSave = userService.getUserByLogin(user.getLogin());
                     try {
@@ -82,18 +97,18 @@ public class SecurePage extends VerticalLayout implements View {
     }
 
     private void addLogoutButton() {
-        Button logout = new Button("Wyloguj");
-        logout.addStyleName(ValoTheme.BUTTON_DANGER);
+        Button buttonLogout = new Button("Wyloguj");
+        buttonLogout.addStyleName(ValoTheme.BUTTON_DANGER);
 
-        logout.addClickListener(clickEvent -> {
+        buttonLogout.addClickListener(clickEvent -> {
             VaadinSession.getCurrent().setAttribute("user", null);
             getUI().getNavigator().navigateTo("");
         });
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.setSizeFull();
-        horizontalLayout.addComponent(logout);
-        horizontalLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
+        horizontalLayout.addComponent(buttonLogout);
+        horizontalLayout.setComponentAlignment(buttonLogout, Alignment.TOP_RIGHT);
         layout.addComponent(horizontalLayout);
     }
 
@@ -111,6 +126,8 @@ public class SecurePage extends VerticalLayout implements View {
         setCaption("Zalogowany użytkownik : " + user.getLogin().toString());
 
         if (user != null) {
+            email.setValue(user.getEmail());
+
             grid.setItems(user.getLectures());
             grid.setHeightByRows(user.getLectures().size());
             grid.addColumn(lecture -> lecture.getLectureDate().format(formatter)).setCaption("Data wykładu").setWidthUndefined();
