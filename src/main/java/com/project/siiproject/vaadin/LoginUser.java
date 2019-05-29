@@ -4,31 +4,29 @@ import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.annotation.PrototypeScope;
 
 @PrototypeScope
 @SpringView
 public class LoginUser extends VerticalLayout implements View {
 
-    private UserService userService;
+    //    @Autowired
+//    private UserService userService;
     private VerticalLayout layout;
+    private UserService userService;
 
-    @Autowired
-    public LoginUser(UserService userService, VerticalLayout layout) {
+    public LoginUser(UserService userService) {
         this.userService = userService;
-        this.layout = layout;
-    }
-
-    public LoginUser() {
         setupLayout();
         addHeader();
         addForm();
+    }
+
+    public LoginUser() {
+
     }
 
     private void setupLayout() {
@@ -77,7 +75,7 @@ public class LoginUser extends VerticalLayout implements View {
                 getUI().getNavigator().navigateTo(SecurePage.VIEW_NAME);
                 Notification notification = Notification.show("Użytkownik zalogowany");
             } catch (IllegalStateException e) {
-                Notification notification = Notification.show("Błąd logowania, sprawdź legin i/lub email.",
+                Notification notification = Notification.show("Błąd logowania, sprawdź login i/lub email.",
                         Notification.Type.ERROR_MESSAGE);
             }
             login.clear();

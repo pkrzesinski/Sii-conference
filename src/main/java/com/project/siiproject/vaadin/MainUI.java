@@ -2,6 +2,7 @@ package com.project.siiproject.vaadin;
 
 import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.lecture.service.LectureService;
+import com.project.siiproject.feature.user.service.UserService;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -17,19 +18,17 @@ public class MainUI extends UI {
 
     private LectureService lectureService;
     private final SpringViewProvider viewProvider;
+    private UserService userService;
 
     private HorizontalLayout mainLayout = new HorizontalLayout();
 
     private Grid<Lecture> grid = new Grid<>();
-    private LoginUser loginUser;
-    private SecurePage securePage;
 
     @Autowired
-    public MainUI(SpringViewProvider viewProvider, LectureService lectureService, LoginUser loginUser, SecurePage securePage) {
+    public MainUI(SpringViewProvider viewProvider, LectureService lectureService, UserService userService) {
         this.viewProvider = viewProvider;
         this.lectureService = lectureService;
-        this.loginUser = loginUser;
-        this.securePage = securePage;
+        this.userService = userService;
     }
 
     @Override
@@ -45,17 +44,16 @@ public class MainUI extends UI {
         });
 
         CssLayout viewContainer = new CssLayout();
-        viewContainer.addComponent(loginUser);
 
         mainLayout.addComponents(grid, viewContainer);
         mainLayout.setSizeFull();
         setContent(mainLayout);
 
         Navigator navigator = new Navigator(this, viewContainer);
-        navigator.addView("", new LoginUser());
+        navigator.addView("", new LoginUser(userService));
         navigator.addView(SecurePage.VIEW_NAME, new SecurePage());
 //       navigator.setErrorView(new ErrorView());
-//        navigator.addProvider(viewProvider);
+        navigator.addProvider(viewProvider);
     }
 
 //    private Button createNavigationButton(String caption, final String viewName) {
