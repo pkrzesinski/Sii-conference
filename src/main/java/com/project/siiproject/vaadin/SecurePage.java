@@ -1,5 +1,6 @@
 package com.project.siiproject.vaadin;
 
+import com.project.siiproject.feature.emailsender.EmailSender;
 import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
@@ -12,6 +13,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.spring.annotation.PrototypeScope;
 
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -28,6 +30,7 @@ public class SecurePage extends VerticalLayout implements View {
     private VerticalLayout layout = new VerticalLayout();
     private Grid<Lecture> grid = new Grid<>();
     private TextField email = new TextField("Email");
+    private EmailSender emailSender = new EmailSender();
 
     public SecurePage(UserService userService, Grid<Lecture> mainGrid) {
         setupLayout();
@@ -105,12 +108,17 @@ public class SecurePage extends VerticalLayout implements View {
                     try {
                         userService.addNewLecture(userLectureToSave, selectedLecture);
                         VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
+                        emailSender.sendEmail(user.getEmail(), "Zapisy na konferencję 01-02.06.2019",
+                                "Serdecznie zapraszamy na wykład: " + selectedLecture.getTitle() + ", dnia" +
+                                selectedLecture.getLectureDate().format(formatter) + "\nDo zobaczenia!");
                         mainGrid.deselectAll();
                         Page.getCurrent().reload();
 
                     } catch (IllegalStateException e) {
                         mainGrid.deselectAll();
                         Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 });
             }
@@ -159,7 +167,7 @@ public class SecurePage extends VerticalLayout implements View {
             email.setValue(user.getEmail());
 
             grid.setItems(user.getLectures());
-            grid.setHeightByRows(user.getLectures().size()<=0?1:user.getLectures().size());
+            grid.setHeightByRows(user.getLectures().size() <= 0 ? 1 : user.getLectures().size());
             grid.addColumn(lecture -> lecture.getLectureDate().format(formatter)).setCaption("Data wykładu").setWidthUndefined();
             grid.addColumn(Lecture::getPath).setCaption("Ścieżka").setWidthUndefined();
             grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined();
