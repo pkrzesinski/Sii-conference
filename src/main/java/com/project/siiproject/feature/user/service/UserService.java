@@ -74,6 +74,13 @@ public class UserService {
     }
 
     public User update(User user) {
+        if (isUserLoginWithoutChange(user)) {
+            return userRepository.save(user);
+        }
+        throw new IllegalStateException();
+    }
+
+    public User emailUpdate(User user) {
         if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user)) {
             User updateUser = getUserByLogin(user.getLogin());
             updateUser.setEmail(user.getEmail());

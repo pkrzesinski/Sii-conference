@@ -13,6 +13,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.spring.annotation.PrototypeScope;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +47,7 @@ public class SecurePage extends VerticalLayout implements View {
             if (emailValidate(email.getValue())) {
                 try {
                     user.setEmail(email.getValue());
-                    userService.update(user);
+                    userService.emailUpdate(user);
                     Notification.show("Adres email został zmienniony");
                 } catch (IllegalStateException e) {
                     Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
@@ -63,36 +64,57 @@ public class SecurePage extends VerticalLayout implements View {
         Button buttonRemoveLecture = new Button("Usuń");
         buttonRemoveLecture.addStyleName(ValoTheme.BUTTON_DANGER);
 
+        grid.asSingleSelect().addValueChangeListener(valueChangeEvent -> {
+            Lecture selectedLectureToBeRemoved = valueChangeEvent.getValue();
+
+            if (selectedLectureToBeRemoved != null) {
+
+                buttonRemoveLecture.addClickListener(clickEvent -> {
+                    User userLectureToBeRemoved = userService.getUserByLogin(user.getLogin());
+                    try {
+                        List<Lecture> newList = userLectureToBeRemoved.getLectures();
+                        newList.removeIf(lecture -> lecture.getTitle().equals(selectedLectureToBeRemoved.getTitle()));
+
+                        user.setLectures(newList);
+                        userService.update(user);
+                        VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
+                        grid.deselectAll();
+                        Page.getCurrent().reload();
+                    } catch (IllegalStateException e) {
+                        grid.deselectAll();
+                        Notification.show("Nie można usunąć", Notification.Type.ERROR_MESSAGE);
+                    }
+                });
+            }
+
+        });
+
         Button buttonAddLectureToUser = new Button("Dodaj wykład");
         buttonAddLectureToUser.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         buttonsUnderGrid.addComponents(buttonAddLectureToUser, buttonRemoveLecture);
 
-        mainGrid.asSingleSelect().
+        mainGrid.asSingleSelect().addValueChangeListener(event -> {
 
-                addValueChangeListener(event ->
+            Lecture selectedLecture = event.getValue();
+            if (selectedLecture != null) {
 
-                {
-                    Lecture selectedLecture = event.getValue();
+                buttonAddLectureToUser.addClickListener(clickEvent -> {
 
-                    if (selectedLecture != null) {
+                    User userLectureToSave = userService.getUserByLogin(user.getLogin());
+                    try {
+                        userService.addNewLecture(userLectureToSave, selectedLecture);
+                        VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
+                        mainGrid.deselectAll();
+                        Page.getCurrent().reload();
 
-                        buttonAddLectureToUser.addClickListener(clickEvent -> {
-
-                            User userLectureToSave = userService.getUserByLogin(user.getLogin());
-                            try {
-                                userService.addNewLecture(userLectureToSave, selectedLecture);
-                                VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
-                                mainGrid.deselectAll();
-                                Page.getCurrent().reload();
-
-                            } catch (IllegalStateException e) {
-                                mainGrid.deselectAll();
-                                Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
-                            }
-                        });
+                    } catch (IllegalStateException e) {
+                        mainGrid.deselectAll();
+                        Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
                     }
                 });
+            }
+        });
 
         layout.addComponents(formLayout, grid, buttonsUnderGrid);
     }
@@ -137,7 +159,7 @@ public class SecurePage extends VerticalLayout implements View {
             email.setValue(user.getEmail());
 
             grid.setItems(user.getLectures());
-            grid.setHeightByRows(user.getLectures().size());
+            grid.setHeightByRows(user.getLectures().size()<=0?1:user.getLectures().size());
             grid.addColumn(lecture -> lecture.getLectureDate().format(formatter)).setCaption("Data wykładu").setWidthUndefined();
             grid.addColumn(Lecture::getPath).setCaption("Ścieżka").setWidthUndefined();
             grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined();
