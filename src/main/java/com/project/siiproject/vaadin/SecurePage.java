@@ -117,7 +117,7 @@ public class SecurePage extends VerticalLayout implements View {
                         mainGrid.deselectAll();
                         Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Notification.show("Wysłanie maila się niepowiodło");
                     }
                 });
             }
