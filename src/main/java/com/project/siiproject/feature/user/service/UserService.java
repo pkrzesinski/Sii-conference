@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -73,7 +74,7 @@ public class UserService {
     }
 
     public User update(User user) {
-        if (isUserLoginWithoutChange(user)) {
+        if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user)) {
             User updateUser = getUserByLogin(user.getLogin());
             updateUser.setEmail(user.getEmail());
             return userRepository.save(updateUser);

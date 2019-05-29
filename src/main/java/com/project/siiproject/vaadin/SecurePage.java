@@ -3,7 +3,6 @@ package com.project.siiproject.vaadin;
 import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
-import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
@@ -13,13 +12,15 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.spring.annotation.PrototypeScope;
 
-import javax.validation.ConstraintViolationException;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @PrototypeScope
 @SpringView(name = SecurePage.VIEW_NAME)
 public class SecurePage extends VerticalLayout implements View {
-
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final String VIEW_NAME = "userPage";
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
     private User user;
@@ -42,13 +43,15 @@ public class SecurePage extends VerticalLayout implements View {
         buttonChangeEmail.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         buttonChangeEmail.addClickListener(clickEvent -> {
-            try {
-                user.setEmail(email.getValue());
-                userService.update(user);
-                Notification.show("Adres email został zmienniony");
-            } catch (IllegalStateException e) {
-                Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
-            } catch (ConstraintViolationException e) {
+            if (emailValidate(email.getValue())) {
+                try {
+                    user.setEmail(email.getValue());
+                    userService.update(user);
+                    Notification.show("Adres email został zmienniony");
+                } catch (IllegalStateException e) {
+                    Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
+                }
+            } else {
                 Notification.show("Błędny format adresu email!", Notification.Type.ERROR_MESSAGE);
             }
         });
@@ -65,27 +68,31 @@ public class SecurePage extends VerticalLayout implements View {
 
         buttonsUnderGrid.addComponents(buttonAddLectureToUser, buttonRemoveLecture);
 
-        mainGrid.asSingleSelect().addValueChangeListener(event -> {
-            Lecture selectedLecture = event.getValue();
+        mainGrid.asSingleSelect().
 
-            if (selectedLecture != null) {
+                addValueChangeListener(event ->
 
-                buttonAddLectureToUser.addClickListener(clickEvent -> {
+                {
+                    Lecture selectedLecture = event.getValue();
 
-                    User userLectureToSave = userService.getUserByLogin(user.getLogin());
-                    try {
-                        userService.addNewLecture(userLectureToSave, selectedLecture);
-                        VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
-                        mainGrid.deselectAll();
-                        Page.getCurrent().reload();
+                    if (selectedLecture != null) {
 
-                    } catch (IllegalStateException e) {
-                        mainGrid.deselectAll();
-                        Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
+                        buttonAddLectureToUser.addClickListener(clickEvent -> {
+
+                            User userLectureToSave = userService.getUserByLogin(user.getLogin());
+                            try {
+                                userService.addNewLecture(userLectureToSave, selectedLecture);
+                                VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
+                                mainGrid.deselectAll();
+                                Page.getCurrent().reload();
+
+                            } catch (IllegalStateException e) {
+                                mainGrid.deselectAll();
+                                Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
+                            }
+                        });
                     }
                 });
-            }
-        });
 
         layout.addComponents(formLayout, grid, buttonsUnderGrid);
     }
@@ -136,4 +143,10 @@ public class SecurePage extends VerticalLayout implements View {
             grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined();
         }
     }
+
+    private boolean emailValidate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
+
 }
