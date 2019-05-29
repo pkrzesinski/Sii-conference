@@ -16,7 +16,7 @@ import org.vaadin.spring.annotation.PrototypeScope;
 @PrototypeScope
 @SpringView(name = SecurePage.VIEW_NAME)
 public class SecurePage extends VerticalLayout implements View {
-    public static final String VIEW_NAME = "secure";
+    public static final String VIEW_NAME = "userPage";
 
     private User user;
     private VerticalLayout layout = new VerticalLayout();
@@ -26,16 +26,17 @@ public class SecurePage extends VerticalLayout implements View {
 
     public SecurePage(UserService userService, Grid<Lecture> mainGrid) {
         setupLayout();
+        addLogoutButton();
         addHeader();
 
-        VerticalLayout formLayout = new VerticalLayout();
+        FormLayout formLayout = new FormLayout();
         formLayout.setSpacing(true);
         formLayout.setSizeFull();
 
-        grid.setSizeFull();
-
+        TextField login = new TextField("Login");
+        TextField email = new TextField("Email");
         Button addLectureToUser = new Button("Dodaj wykład");
-        formLayout.addComponent(addLectureToUser);
+        formLayout.addComponents(login, email, addLectureToUser);
 
         mainGrid.asSingleSelect().addValueChangeListener(event -> {
             Lecture selectedLecture = event.getValue();
@@ -50,6 +51,7 @@ public class SecurePage extends VerticalLayout implements View {
                         mainGrid.deselectAll();
                         Page.getCurrent().reload();
                     } catch (IllegalStateException e) {
+                        mainGrid.deselectAll();
                         Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
                     }
 
@@ -57,26 +59,32 @@ public class SecurePage extends VerticalLayout implements View {
             }
         });
 
-        Button logout = new Button("Wyloguj");
-        logout.addStyleName(ValoTheme.BUTTON_DANGER);
+        grid.setSizeFull();
 
-        formLayout.addComponents(logout);
         layout.addComponents(formLayout, grid);
-
-        logout.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                getUI().getNavigator().removeView(SecurePage.VIEW_NAME);
-                VaadinSession.getCurrent().setAttribute("user", null);
-                getUI().getNavigator().navigateTo("");
-            }
-        });
     }
 
     private void setupLayout() {
         layout = new VerticalLayout();
         layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+        layout.setSizeFull();
         addComponent(layout);
+    }
+
+    private void addLogoutButton() {
+        Button logout = new Button("Wyloguj");
+        logout.addStyleName(ValoTheme.BUTTON_DANGER);
+
+        logout.addClickListener(clickEvent -> {
+            VaadinSession.getCurrent().setAttribute("user", null);
+            getUI().getNavigator().navigateTo("");
+        });
+
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.setSizeFull();
+        horizontalLayout.addComponent(logout);
+        horizontalLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
+        layout.addComponent(horizontalLayout);
     }
 
     private void addHeader() {

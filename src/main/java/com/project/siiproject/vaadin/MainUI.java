@@ -8,11 +8,12 @@ import com.vaadin.navigator.PushStateNavigation;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @PushStateNavigation
 @SpringUI
@@ -21,6 +22,7 @@ public class MainUI extends UI {
     private LectureService lectureService;
     private final SpringViewProvider viewProvider;
     private UserService userService;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-mm-yyyy");
 
     private HorizontalLayout mainLayout = new HorizontalLayout();
 
@@ -35,34 +37,30 @@ public class MainUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        CssLayout leftView = new CssLayout();
+        leftView.setSizeFull();
+
+        Label header = new Label("Konfernecja 01-02.06.2019");
+        header.addStyleName(ValoTheme.LABEL_H1);
+
         grid.setSizeFull();
+        grid.setHeightByRows(lectureService.getAllLectures().size());
         grid.setItems(lectureService.getAllLectures());
-        grid.addColumn(Lecture::getLectureDate).setCaption("Data wykładu");
-        grid.addColumn(Lecture::getPath).setCaption("Ścieżka");
-        grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu");
+        grid.addColumn(lecture -> lecture.getLectureDate().format(formatter)).setCaption("Data wykładu").setWidthUndefined();
+        grid.addColumn(Lecture::getPath).setCaption("Ścieżka").setWidthUndefined();
+        grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined().;
+
+        leftView.addComponents(header, grid);
 
         CssLayout viewContainer = new CssLayout();
 
-        mainLayout.addComponents(grid, viewContainer);
+        mainLayout.addComponents(leftView, viewContainer);
         mainLayout.setSizeFull();
         setContent(mainLayout);
 
         Navigator navigator = new Navigator(this, viewContainer);
         navigator.addView("", new LoginUser(userService));
         navigator.addView(SecurePage.VIEW_NAME, new SecurePage(userService, grid));
-//       navigator.setErrorView(new ErrorView());
         navigator.addProvider(viewProvider);
     }
-
-//    private class ErrorView extends VerticalLayout implements View {
-//
-//        private Label message;
-//
-//        ErrorView() {
-//            setMargin(true);
-//            message = new Label("Please click one of the buttons at the top of the screen.");
-//            addComponent(message);
-//            message.addStyleName(ValoTheme.LABEL_COLORED);
-//        }
-//    }
 }

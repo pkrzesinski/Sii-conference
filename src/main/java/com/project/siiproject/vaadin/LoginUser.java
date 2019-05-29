@@ -3,6 +3,7 @@ package com.project.siiproject.vaadin;
 import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
 import com.vaadin.navigator.View;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -46,26 +47,22 @@ public class LoginUser extends VerticalLayout implements View {
 
     private void addForm() {
 
-        VerticalLayout formLayout = new VerticalLayout();
+        FormLayout formLayout = new FormLayout();
         formLayout.setSpacing(true);
         formLayout.setSizeFull();
 
         TextField login = new TextField("Login");
         TextField email = new TextField("Email");
 
-        HorizontalSplitPanel split = new HorizontalSplitPanel();
+        HorizontalLayout split = new HorizontalLayout();
 
         Button loginButton = new Button("Zaloguj");
         loginButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-        loginButton.setSizeFull();
 
         Button addUserButton = new Button("Dodaj użytkownika");
         addUserButton.addStyleNames(ValoTheme.BUTTON_PRIMARY);
-        addUserButton.setSizeFull();
 
-        split.setSizeFull();
-        split.setFirstComponent(loginButton);
-        split.setSecondComponent(addUserButton);
+        split.addComponents(loginButton, addUserButton);
 
         formLayout.addComponents(login, email, split);
         layout.addComponent(formLayout);
@@ -79,7 +76,7 @@ public class LoginUser extends VerticalLayout implements View {
             } catch (IllegalStateException e) {
                 Notification notification = Notification.show("Błąd logowania, sprawdź login i/lub email.",
                         Notification.Type.ERROR_MESSAGE);
-            }catch (ConstraintViolationException e) {
+            } catch (ConstraintViolationException e) {
                 Notification.show("Dane wpisane niepoprawnie !", Notification.Type.ERROR_MESSAGE);
             }
             login.clear();
@@ -92,13 +89,12 @@ public class LoginUser extends VerticalLayout implements View {
                 userService.save(new User(login.getValue(), email.getValue()));
                 Notification notification = Notification.show("Użytkownik o loginie " + login.getValue() + " i email + "
                         + email.getValue() + " został pomyślnie zapisany");
+                Page.getCurrent().reload();
             } catch (IllegalStateException e) {
                 Notification.show("Użytkownik o podanym loginie i/lub email jest już zarejestrowany.", Notification.Type.ERROR_MESSAGE);
             } catch (ConstraintViolationException e) {
                 Notification.show("Dane wpisane niepoprawnie !", Notification.Type.ERROR_MESSAGE);
             }
-            login.clear();
-            email.clear();
             login.focus();
         });
     }

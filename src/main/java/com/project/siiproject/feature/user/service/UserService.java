@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,11 +47,13 @@ public class UserService {
     }
 
     public User addNewLecture(User user, Lecture lecture) {
-        Optional<Lecture> lectureOptional = user.getLectures().stream()
+        List<Lecture> usersLecture = user.getLectures();
+        LocalDateTime lectureTime = lecture.getLectureDate();
+        Optional<Lecture> lectureOptional = usersLecture.stream()
                 .filter(lecture::equals)
                 .findFirst();
-        Optional<Lecture> lectureAtTheSameTime = user.getLectures().stream()
-                .filter(l -> l.getLectureDate().isEqual(lecture.getLectureDate()))
+        Optional<Lecture> lectureAtTheSameTime = usersLecture.stream()
+                .filter(l -> l.getLectureDate().isEqual(lectureTime))
                 .findFirst();
 
         if (lectureOptional.isPresent() || lectureAtTheSameTime.isPresent()) {
