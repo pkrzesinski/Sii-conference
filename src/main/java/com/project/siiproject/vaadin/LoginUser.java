@@ -84,6 +84,8 @@ public class LoginUser extends VerticalLayout implements View {
         buttonAddUser.addClickListener(clickEvent -> {
             try {
                 userService.save(new User(login.getValue(), email.getValue()));
+                VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(login.getValue()));
+                getUI().getNavigator().navigateTo(SecurePage.VIEW_NAME);
                 Notification notification = Notification.show("Użytkownik o loginie " + login.getValue() + " i email + "
                         + email.getValue() + " został pomyślnie zapisany");
                 Page.getCurrent().reload();
