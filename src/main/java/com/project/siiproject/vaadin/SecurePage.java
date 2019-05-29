@@ -10,19 +10,19 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.annotation.PrototypeScope;
+
+import java.time.format.DateTimeFormatter;
 
 @PrototypeScope
 @SpringView(name = SecurePage.VIEW_NAME)
 public class SecurePage extends VerticalLayout implements View {
-    public static final String VIEW_NAME = "userPage";
 
+    public static final String VIEW_NAME = "userPage";
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
     private User user;
     private VerticalLayout layout = new VerticalLayout();
     private Grid<Lecture> grid = new Grid<>();
-    @Autowired
-    private UserService userService;
 
     public SecurePage(UserService userService, Grid<Lecture> mainGrid) {
         setupLayout();
@@ -54,14 +54,16 @@ public class SecurePage extends VerticalLayout implements View {
                         mainGrid.deselectAll();
                         Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
                     }
-
                 });
             }
         });
 
         grid.setSizeFull();
 
-        layout.addComponents(formLayout, grid);
+        Button removeLecture = new Button("Usuń");
+        removeLecture.addStyleName(ValoTheme.BUTTON_DANGER);
+
+        layout.addComponents(formLayout, grid, removeLecture);
     }
 
     private void setupLayout() {
@@ -102,9 +104,10 @@ public class SecurePage extends VerticalLayout implements View {
 
         if (user != null) {
             grid.setItems(user.getLectures());
-            grid.addColumn(Lecture::getLectureDate).setCaption("Data wykładu");
-            grid.addColumn(Lecture::getPath).setCaption("Ścieżka");
-            grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu");
+            grid.setHeightByRows(user.getLectures().size());
+            grid.addColumn(lecture -> lecture.getLectureDate().format(formatter)).setCaption("Data wykładu").setWidthUndefined();
+            grid.addColumn(Lecture::getPath).setCaption("Ścieżka").setWidthUndefined();
+            grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined();
         }
     }
 }

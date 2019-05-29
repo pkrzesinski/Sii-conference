@@ -12,7 +12,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @PushStateNavigation
@@ -22,7 +21,7 @@ public class MainUI extends UI {
     private LectureService lectureService;
     private final SpringViewProvider viewProvider;
     private UserService userService;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-mm-yyyy");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
 
     private HorizontalLayout mainLayout = new HorizontalLayout();
 
@@ -48,7 +47,7 @@ public class MainUI extends UI {
         grid.setItems(lectureService.getAllLectures());
         grid.addColumn(lecture -> lecture.getLectureDate().format(formatter)).setCaption("Data wykładu").setWidthUndefined();
         grid.addColumn(Lecture::getPath).setCaption("Ścieżka").setWidthUndefined();
-        grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined().;
+        grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined();
 
         leftView.addComponents(header, grid);
 
