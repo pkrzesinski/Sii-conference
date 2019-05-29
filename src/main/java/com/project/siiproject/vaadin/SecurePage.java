@@ -1,15 +1,16 @@
 package com.project.siiproject.vaadin;
 
+import com.project.siiproject.feature.lecture.model.Lecture;
+import com.project.siiproject.feature.user.model.User;
+import com.project.siiproject.feature.user.service.UserService;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.annotation.PrototypeScope;
 
 @PrototypeScope
@@ -17,25 +18,50 @@ import org.vaadin.spring.annotation.PrototypeScope;
 public class SecurePage extends VerticalLayout implements View {
     public static final String VIEW_NAME = "secure";
 
+    private User user;
     private VerticalLayout layout = new VerticalLayout();
-    private Label secure;
-    private Label currentUser;
-    private Button logout;
+    private Grid<Lecture> grid = new Grid<>();
+    @Autowired
+    private UserService userService;
 
-    public SecurePage() {
-
-        VerticalLayout formLayout = new VerticalLayout();
-        formLayout.setSpacing(true);
-
+    public SecurePage(UserService userService, Grid<Lecture> mainGrid) {
         setupLayout();
         addHeader();
 
-        currentUser = new Label("Obecny użytkownik");
-        logout = new Button("Logout");
+        VerticalLayout formLayout = new VerticalLayout();
+        formLayout.setSpacing(true);
+        formLayout.setSizeFull();
+
+        grid.setSizeFull();
+
+        Button addLectureToUser = new Button("Dodaj wykład");
+        formLayout.addComponent(addLectureToUser);
+
+        mainGrid.asSingleSelect().addValueChangeListener(event -> {
+            Lecture selectedLecture = event.getValue();
+
+            if (selectedLecture != null) {
+                addLectureToUser.addClickListener(clickEvent -> {
+
+                    User userLectureToSave = userService.getUserByLogin(user.getLogin());
+                    try {
+                        userService.addNewLecture(userLectureToSave, selectedLecture);
+                        VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
+                        mainGrid.deselectAll();
+                        Page.getCurrent().reload();
+                    } catch (IllegalStateException e) {
+                        Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
+                    }
+
+                });
+            }
+        });
+
+        Button logout = new Button("Wyloguj");
         logout.addStyleName(ValoTheme.BUTTON_DANGER);
 
-        formLayout.addComponents(currentUser, logout);
-        layout.addComponent(formLayout);
+        formLayout.addComponents(logout);
+        layout.addComponents(formLayout, grid);
 
         logout.addClickListener(new Button.ClickListener() {
             @Override
@@ -62,6 +88,15 @@ public class SecurePage extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        currentUser.setCaption("Obecny użytkownik : " + VaadinSession.getCurrent().getAttribute("user").toString());
+        user = (User) VaadinSession.getCurrent().getAttribute("user");
+
+        setCaption("Zalogowany użytkownik : " + user.getLogin().toString());
+
+        if (user != null) {
+            grid.setItems(user.getLectures());
+            grid.addColumn(Lecture::getLectureDate).setCaption("Data wykładu");
+            grid.addColumn(Lecture::getPath).setCaption("Ścieżka");
+            grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu");
+        }
     }
 }

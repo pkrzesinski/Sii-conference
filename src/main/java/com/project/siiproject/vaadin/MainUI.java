@@ -4,6 +4,7 @@ import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.lecture.service.LectureService;
 import com.project.siiproject.feature.user.service.UserService;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.PushStateNavigation;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -13,6 +14,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@PushStateNavigation
 @SpringUI
 public class MainUI extends UI {
 
@@ -39,9 +41,7 @@ public class MainUI extends UI {
         grid.addColumn(Lecture::getPath).setCaption("Ścieżka");
         grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu");
 
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            Lecture selectedLecture = event.getValue();
-        });
+
 
         CssLayout viewContainer = new CssLayout();
 
@@ -51,23 +51,12 @@ public class MainUI extends UI {
 
         Navigator navigator = new Navigator(this, viewContainer);
         navigator.addView("", new LoginUser(userService));
-        navigator.addView(SecurePage.VIEW_NAME, new SecurePage());
+        navigator.addView(SecurePage.VIEW_NAME, new SecurePage(userService, grid));
 //       navigator.setErrorView(new ErrorView());
         navigator.addProvider(viewProvider);
     }
 
-//    private Button createNavigationButton(String caption, final String viewName) {
-//        Button button = new Button(caption);
-//        button.addStyleName(ValoTheme.BUTTON_SMALL);
-//        button.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                getUI().getNavigator().navigateTo(viewName);
-//            }
-//        });
-//        return button;
-//    }
-//
+
 //    private class ErrorView extends VerticalLayout implements View {
 //
 //        private Label message;

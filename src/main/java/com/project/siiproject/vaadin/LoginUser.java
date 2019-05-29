@@ -71,7 +71,7 @@ public class LoginUser extends VerticalLayout implements View {
         loginButton.addClickListener(clickEvent -> {
             try {
                 userService.getUserByLoginAndEmail(login.getValue(), email.getValue());
-                VaadinSession.getCurrent().setAttribute("user", login.getValue());
+                VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(login.getValue()));
                 getUI().getNavigator().navigateTo(SecurePage.VIEW_NAME);
                 Notification notification = Notification.show("Użytkownik zalogowany");
             } catch (IllegalStateException e) {

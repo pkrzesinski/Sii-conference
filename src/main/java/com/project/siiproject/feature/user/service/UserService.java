@@ -1,5 +1,6 @@
 package com.project.siiproject.feature.user.service;
 
+import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.user.dao.UserRepository;
 import com.project.siiproject.feature.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -41,6 +43,22 @@ public class UserService {
             return user;
         } else
             throw new IllegalStateException();
+    }
+
+    public User addNewLecture(User user, Lecture lecture) {
+        Optional<Lecture> lectureOptional = user.getLectures().stream()
+                .filter(lecture::equals)
+                .findFirst();
+        Optional<Lecture> lectureAtTheSameTime = user.getLectures().stream()
+                .filter(l -> l.getLectureDate().isEqual(lecture.getLectureDate()))
+                .findFirst();
+
+        if (lectureOptional.isPresent() || lectureAtTheSameTime.isPresent()) {
+            throw new IllegalStateException();
+        } else {
+            user.getLectures().add(lecture);
+            return userRepository.save(user);
+        }
     }
 
     public User save(final User user) {
