@@ -3,6 +3,7 @@ package com.project.siiproject.vaadin;
 import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
+import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
@@ -48,7 +49,7 @@ public class SecurePage extends VerticalLayout implements View {
             } catch (IllegalStateException e) {
                 Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
             } catch (ConstraintViolationException e) {
-                Notification.show("Błędny format !", Notification.Type.ERROR_MESSAGE);
+                Notification.show("Błędny format adresu email!", Notification.Type.ERROR_MESSAGE);
             }
         });
 

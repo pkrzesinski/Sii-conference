@@ -65,15 +65,18 @@ public class UserService {
     }
 
     public User save(final User user) {
-        if (checkIfUserAlreadyInDatabase(user)) {
+        if (isUserAlreadyInDatabase(user)) {
             throw new IllegalStateException();
         }
-        return userRepository.save(user);
+        User newUser = new User(user.getLogin(), user.getEmail());
+        return userRepository.save(newUser);
     }
 
     public User update(User user) {
-        if (checkIfUserLoginWithoutChange(user)) {
-            return userRepository.save(user);
+        if (isUserLoginWithoutChange(user)) {
+            User updateUser = getUserByLogin(user.getLogin());
+            updateUser.setEmail(user.getEmail());
+            return userRepository.save(updateUser);
         }
         throw new IllegalStateException();
     }
@@ -82,12 +85,19 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    private boolean checkIfUserAlreadyInDatabase(User user) {
+    private boolean isUserAlreadyInDatabase(User user) {
         return getUserByEmail(user.getEmail()) != null || getUserByLogin(user.getLogin()) != null;
     }
 
-    private boolean checkIfUserLoginWithoutChange(User user) {
+    private boolean isUserLoginWithoutChange(User user) {
         return getUserById(user.getId()).getLogin().equals(user.getLogin());
+    }
+
+    private boolean isEmailAlreadyInDataBase(User user) {
+        if (getUserByEmail(user.getEmail()) != null) {
+            return true;
+        }
+        return false;
     }
 }
 

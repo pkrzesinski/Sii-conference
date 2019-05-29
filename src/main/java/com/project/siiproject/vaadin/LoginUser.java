@@ -53,18 +53,18 @@ public class LoginUser extends VerticalLayout implements View {
 
         HorizontalLayout split = new HorizontalLayout();
 
-        Button loginButton = new Button("Zaloguj");
-        loginButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+        Button buttonLogin = new Button("Zaloguj");
+        buttonLogin.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 
-        Button addUserButton = new Button("Dodaj użytkownika");
-        addUserButton.addStyleNames(ValoTheme.BUTTON_PRIMARY);
+        Button buttonAddUser = new Button("Dodaj użytkownika");
+        buttonAddUser.addStyleNames(ValoTheme.BUTTON_PRIMARY);
 
-        split.addComponents(loginButton, addUserButton);
+        split.addComponents(buttonLogin, buttonAddUser);
 
         formLayout.addComponents(login, email, split);
         layout.addComponent(formLayout);
 
-        loginButton.addClickListener(clickEvent -> {
+        buttonLogin.addClickListener(clickEvent -> {
             try {
                 userService.getUserByLoginAndEmail(login.getValue(), email.getValue());
                 VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(login.getValue()));
@@ -81,7 +81,7 @@ public class LoginUser extends VerticalLayout implements View {
             login.focus();
         });
 
-        addUserButton.addClickListener(clickEvent -> {
+        buttonAddUser.addClickListener(clickEvent -> {
             try {
                 userService.save(new User(login.getValue(), email.getValue()));
                 Notification notification = Notification.show("Użytkownik o loginie " + login.getValue() + " i email + "
