@@ -37,10 +37,6 @@ public class User {
         this.email = email;
     }
 
-    public void addLecture(Lecture lecture) {
-        lectures.add(lecture);
-    }
-
     public Long getId() {
         return id;
     }

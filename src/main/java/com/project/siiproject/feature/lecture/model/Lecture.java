@@ -11,6 +11,7 @@ import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -75,14 +76,19 @@ public class Lecture {
     }
 
     @Override
-    public String toString() {
-        return "Lecture{" +
-                "title='" + title + '\'' +
-                ", lectureDate=" + lectureDate +
-                ", path=" + path +
-                ", users=" + (users != null ? users.stream()
-                .map(User::getLogin)
-                .collect(Collectors.joining(", ")) : "") +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lecture lecture = (Lecture) o;
+        return path == lecture.path &&
+                Objects.equals(id, lecture.id) &&
+                Objects.equals(title, lecture.title) &&
+                Objects.equals(lectureDate, lecture.lectureDate) &&
+                Objects.equals(users, lecture.users);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, lectureDate, path, users);
     }
 }

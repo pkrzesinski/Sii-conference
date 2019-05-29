@@ -4,21 +4,24 @@ import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.lecture.service.LectureService;
 import com.project.siiproject.feature.user.service.UserService;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.PushStateNavigation;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.format.DateTimeFormatter;
+
+@PushStateNavigation
 @SpringUI
 public class MainUI extends UI {
 
     private LectureService lectureService;
     private final SpringViewProvider viewProvider;
     private UserService userService;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
 
     private HorizontalLayout mainLayout = new HorizontalLayout();
 
@@ -33,50 +36,30 @@ public class MainUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        grid.setSizeFull();
-        grid.setItems(lectureService.getAllLectures());
-        grid.addColumn(Lecture::getLectureDate).setCaption("Data wykładu");
-        grid.addColumn(Lecture::getPath).setCaption("Ścieżka");
-        grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu");
+        CssLayout leftView = new CssLayout();
+        leftView.setSizeFull();
 
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            Lecture selectedLecture = event.getValue();
-        });
+        Label header = new Label("Konfernecja 01-02.06.2019");
+        header.addStyleName(ValoTheme.LABEL_H1);
+
+        grid.setSizeFull();
+        grid.setHeightByRows(lectureService.getAllLectures().size());
+        grid.setItems(lectureService.getAllLectures());
+        grid.addColumn(lecture -> lecture.getLectureDate().format(formatter)).setCaption("Data wykładu").setWidthUndefined();
+        grid.addColumn(Lecture::getPath).setCaption("Ścieżka").setWidthUndefined();
+        grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined();
+
+        leftView.addComponents(header, grid);
 
         CssLayout viewContainer = new CssLayout();
 
-        mainLayout.addComponents(grid, viewContainer);
+        mainLayout.addComponents(leftView, viewContainer);
         mainLayout.setSizeFull();
         setContent(mainLayout);
 
         Navigator navigator = new Navigator(this, viewContainer);
         navigator.addView("", new LoginUser(userService));
-        navigator.addView(SecurePage.VIEW_NAME, new SecurePage());
-//       navigator.setErrorView(new ErrorView());
+        navigator.addView(SecurePage.VIEW_NAME, new SecurePage(userService, grid));
         navigator.addProvider(viewProvider);
     }
-
-//    private Button createNavigationButton(String caption, final String viewName) {
-//        Button button = new Button(caption);
-//        button.addStyleName(ValoTheme.BUTTON_SMALL);
-//        button.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                getUI().getNavigator().navigateTo(viewName);
-//            }
-//        });
-//        return button;
-//    }
-//
-//    private class ErrorView extends VerticalLayout implements View {
-//
-//        private Label message;
-//
-//        ErrorView() {
-//            setMargin(true);
-//            message = new Label("Please click one of the buttons at the top of the screen.");
-//            addComponent(message);
-//            message.addStyleName(ValoTheme.LABEL_COLORED);
-//        }
-//    }
 }
