@@ -16,8 +16,6 @@ import javax.validation.ConstraintViolationException;
 @SpringView
 public class LoginUser extends VerticalLayout implements View {
 
-    //    @Autowired
-//    private UserService userService;
     private VerticalLayout layout;
     private UserService userService;
 
@@ -29,7 +27,6 @@ public class LoginUser extends VerticalLayout implements View {
     }
 
     public LoginUser() {
-
     }
 
     private void setupLayout() {

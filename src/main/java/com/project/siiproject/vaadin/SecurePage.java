@@ -29,19 +29,31 @@ public class SecurePage extends VerticalLayout implements View {
         addLogoutButton();
         addHeader();
 
+        grid.setSizeFull();
+
         FormLayout formLayout = new FormLayout();
         formLayout.setSpacing(true);
         formLayout.setSizeFull();
 
         TextField login = new TextField("Login");
         TextField email = new TextField("Email");
+        formLayout.addComponents(login, email);
+
+        HorizontalLayout buttonsUnderGrid = new HorizontalLayout();
+
+        Button removeLecture = new Button("Usuń");
+        removeLecture.addStyleName(ValoTheme.BUTTON_DANGER);
+
         Button addLectureToUser = new Button("Dodaj wykład");
-        formLayout.addComponents(login, email, addLectureToUser);
+        addLectureToUser.addStyleName(ValoTheme.BUTTON_PRIMARY);
+
+        buttonsUnderGrid.addComponents(addLectureToUser, removeLecture);
 
         mainGrid.asSingleSelect().addValueChangeListener(event -> {
             Lecture selectedLecture = event.getValue();
 
             if (selectedLecture != null) {
+
                 addLectureToUser.addClickListener(clickEvent -> {
 
                     User userLectureToSave = userService.getUserByLogin(user.getLogin());
@@ -50,6 +62,7 @@ public class SecurePage extends VerticalLayout implements View {
                         VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
                         mainGrid.deselectAll();
                         Page.getCurrent().reload();
+
                     } catch (IllegalStateException e) {
                         mainGrid.deselectAll();
                         Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
@@ -58,12 +71,7 @@ public class SecurePage extends VerticalLayout implements View {
             }
         });
 
-        grid.setSizeFull();
-
-        Button removeLecture = new Button("Usuń");
-        removeLecture.addStyleName(ValoTheme.BUTTON_DANGER);
-
-        layout.addComponents(formLayout, grid, removeLecture);
+        layout.addComponents(formLayout, grid, buttonsUnderGrid);
     }
 
     private void setupLayout() {
