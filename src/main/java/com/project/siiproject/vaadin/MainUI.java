@@ -39,7 +39,7 @@ public class MainUI extends UI {
         CssLayout leftView = new CssLayout();
         leftView.setSizeFull();
 
-        Label header = new Label("Konfernecja 01-02.06.2019");
+        Label header = new Label("Konferencja 01-02.06.2019");
         header.addStyleName(ValoTheme.LABEL_H1);
 
         grid.setSizeFull();
