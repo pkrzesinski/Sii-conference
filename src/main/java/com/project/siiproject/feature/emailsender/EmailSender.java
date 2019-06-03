@@ -28,6 +28,6 @@ public class EmailSender {
         writer.write(message + "\n\n");
         writer.write("------------------------------------------------------\n\n");
         writer.close();
-        LOG.info("Email to " + emailAddress + " sent.");
+        LOG.info("Email to " + emailAddress + " has been sent.");
     }
 }
