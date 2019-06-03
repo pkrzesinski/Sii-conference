@@ -11,6 +11,8 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.vaadin.spring.annotation.PrototypeScope;
 
 import java.io.IOException;
@@ -22,6 +24,8 @@ import java.util.regex.Pattern;
 @PrototypeScope
 @SpringView(name = SecurePage.VIEW_NAME)
 public class SecurePage extends VerticalLayout implements View {
+
+    private static final Logger LOG = LogManager.getLogger(SecurePage.class);
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final String VIEW_NAME = "userPage";
@@ -52,11 +56,14 @@ public class SecurePage extends VerticalLayout implements View {
                     user.setEmail(email.getValue());
                     userService.emailUpdate(user);
                     Notification.show("Adres email został zmienniony");
+                    LOG.info("User " + user.getLogin() + " has changed email.");
                 } catch (IllegalStateException e) {
                     Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
+                    LOG.warn("Illegal State Exception occurred" + e);
                 }
             } else {
                 Notification.show("Błędny format adresu email!", Notification.Type.ERROR_MESSAGE);
+                LOG.warn("User " + user.getLogin() + " has tried to change email address, but wrong format was inserted.");
             }
         });
 
@@ -80,12 +87,16 @@ public class SecurePage extends VerticalLayout implements View {
 
                         user.setLectures(newList);
                         userService.update(user);
+
+                        LOG.info("User " + user.getLogin() + " has deleted lecture " + selectedLectureToBeRemoved.getTitle());
+
                         VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
                         grid.deselectAll();
                         Page.getCurrent().reload();
                     } catch (IllegalStateException e) {
                         grid.deselectAll();
                         Notification.show("Nie można usunąć", Notification.Type.ERROR_MESSAGE);
+                        LOG.warn("User " + user.getLogin() + " was unable to delete lecture " + selectedLectureToBeRemoved);
                     }
                 });
             }
