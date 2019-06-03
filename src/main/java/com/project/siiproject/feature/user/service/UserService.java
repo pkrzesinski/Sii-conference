@@ -3,6 +3,8 @@ package com.project.siiproject.feature.user.service;
 import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.user.dao.UserRepository;
 import com.project.siiproject.feature.user.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @Transactional
 public class UserService {
 
+    private static final Logger LOG = LogManager.getLogger(UserService.class);
     private final UserRepository userRepository;
 
     @Autowired
@@ -27,22 +30,27 @@ public class UserService {
     }
 
     public User getUserById(final Long id) {
+        LOG.info("User with ID was looked in database" + id);
         return userRepository.getOne(id);
     }
 
     public User getUserByEmail(final String email) {
+        LOG.info("User with email was looked in database" + email);
         return userRepository.findByEmail(email);
     }
 
     public User getUserByLogin(final String login) {
+        LOG.info("User with email was looked in database" + login);
         return userRepository.findByLogin(login);
     }
 
     public User getUserByLoginAndEmail(final String login, final String email) {
         User user = userRepository.findByLoginAndEmail(login, email);
         if (user != null) {
+            LOG.info("User with login " + login + " and email " + email + " was found in database");
             return user;
         } else
+            LOG.info("User with login " + login + " and email " + email + " was not found in database");
             throw new IllegalStateException();
     }
 
@@ -56,15 +64,13 @@ public class UserService {
                 .filter(l -> l.getLectureDate().isEqual(lectureTime))
                 .findFirst();
 
-        if ( lectureOptional.isPresent() || lectureAtTheSameTime.isPresent() || isLectureFull(lecture)){
+        if (lectureOptional.isPresent() || lectureAtTheSameTime.isPresent() || isLectureFull(lecture)) {
             throw new IllegalStateException();
-        } else{
+        } else {
             user.getLectures().add(lecture);
             return userRepository.save(user);
         }
     }
-
-
 
     public User save(final User user) {
         if (isUserAlreadyInDatabase(user)) {
