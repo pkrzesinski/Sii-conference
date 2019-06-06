@@ -17,3 +17,5 @@ HELP.md
 *.iml
 *.ipr
 
+emails.txt
+/logs/*
