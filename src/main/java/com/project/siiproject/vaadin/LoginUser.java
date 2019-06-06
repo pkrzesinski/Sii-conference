@@ -8,6 +8,8 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.vaadin.spring.annotation.PrototypeScope;
 
 import javax.validation.ConstraintViolationException;
@@ -16,6 +18,7 @@ import javax.validation.ConstraintViolationException;
 @SpringView
 public class LoginUser extends VerticalLayout implements View {
 
+    private static final Logger LOG = LogManager.getLogger(LoginUser.class);
     private VerticalLayout layout;
     private UserService userService;
 
@@ -67,14 +70,17 @@ public class LoginUser extends VerticalLayout implements View {
         buttonLogin.addClickListener(clickEvent -> {
             try {
                 userService.getUserByLoginAndEmail(login.getValue(), email.getValue());
+                LOG.info("User started logging in with following credentials " + login.getValue() + " " + email.getValue());
                 VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(login.getValue()));
                 getUI().getNavigator().navigateTo(SecurePage.VIEW_NAME);
                 Notification notification = Notification.show("Użytkownik zalogowany");
             } catch (IllegalStateException e) {
                 Notification notification = Notification.show("Błąd logowania, sprawdź login i/lub email.",
                         Notification.Type.ERROR_MESSAGE);
+                LOG.warn("User failed to log in with following credentials " + login.getValue() + " " + email.getValue());
             } catch (ConstraintViolationException e) {
                 Notification.show("Dane wpisane niepoprawnie !", Notification.Type.ERROR_MESSAGE);
+                LOG.error("User with following credentials has violated database constraints " + login.getValue() + " " + email.getValue());
             }
             login.clear();
             email.clear();
@@ -84,6 +90,7 @@ public class LoginUser extends VerticalLayout implements View {
         buttonAddUser.addClickListener(clickEvent -> {
             try {
                 userService.save(new User(login.getValue(), email.getValue()));
+                LOG.info("New user added " + login.getValue() + " " + email.getValue());
                 VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(login.getValue()));
                 getUI().getNavigator().navigateTo(SecurePage.VIEW_NAME);
                 Notification notification = Notification.show("Użytkownik o loginie " + login.getValue() + " i email + "
@@ -91,8 +98,10 @@ public class LoginUser extends VerticalLayout implements View {
                 Page.getCurrent().reload();
             } catch (IllegalStateException e) {
                 Notification.show("Użytkownik o podanym loginie i/lub email jest już zarejestrowany.", Notification.Type.ERROR_MESSAGE);
+                LOG.warn("New user failed to create account " + login.getValue() + " " + email.getValue());
             } catch (ConstraintViolationException e) {
                 Notification.show("Dane wpisane niepoprawnie !", Notification.Type.ERROR_MESSAGE);
+                LOG.error("New user creating account violated database constraints " + login.getValue() + " " + email.getValue());
             }
             login.focus();
         });

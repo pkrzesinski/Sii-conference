@@ -3,6 +3,8 @@ package com.project.siiproject.feature.user.service;
 import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.user.dao.UserRepository;
 import com.project.siiproject.feature.user.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @Transactional
 public class UserService {
 
+    private static final Logger LOG = LogManager.getLogger(UserService.class);
     private final UserRepository userRepository;
 
     @Autowired
@@ -27,23 +30,28 @@ public class UserService {
     }
 
     public User getUserById(final Long id) {
+        LOG.info("User with ID: {} was looked in database", id);
         return userRepository.getOne(id);
     }
 
     public User getUserByEmail(final String email) {
+        LOG.info("User with email: {} was looked in database", email);
         return userRepository.findByEmail(email);
     }
 
     public User getUserByLogin(final String login) {
+        LOG.info("User: {} was looked in database", login);
         return userRepository.findByLogin(login);
     }
 
     public User getUserByLoginAndEmail(final String login, final String email) {
         User user = userRepository.findByLoginAndEmail(login, email);
         if (user != null) {
+            LOG.info("User: {}, email: {} was found in database", login, email);
             return user;
         } else
-            throw new IllegalStateException();
+            LOG.info("User: {}, email: {} was not found in database", login, email);
+        throw new IllegalStateException();
     }
 
     public User addNewLecture(User user, Lecture lecture) {
@@ -56,28 +64,31 @@ public class UserService {
                 .filter(l -> l.getLectureDate().isEqual(lectureTime))
                 .findFirst();
 
-        if ( lectureOptional.isPresent() || lectureAtTheSameTime.isPresent() || isLectureFull(lecture)){
+        if (lectureOptional.isPresent() || lectureAtTheSameTime.isPresent() || isLectureFull(lecture)) {
+            LOG.warn("User: {} has tried to add lecture, but failed.", user.getLogin());
             throw new IllegalStateException();
-        } else{
+        } else {
             user.getLectures().add(lecture);
+            LOG.info("User: {} has enrolled for lecture: {}", user.getLogin(), lecture.getTitle());
             return userRepository.save(user);
         }
     }
 
-
-
     public User save(final User user) {
         if (isUserAlreadyInDatabase(user)) {
+            LOG.warn("User: {} is already in database, failed to save.", user.getLogin());
             throw new IllegalStateException();
         }
-        User newUser = new User(user.getLogin(), user.getEmail());
-        return userRepository.save(newUser);
+        LOG.info("New user added to database: {}", user.getLogin());
+        return userRepository.save(user);
     }
 
     public User update(User user) {
         if (isUserLoginWithoutChange(user)) {
+            LOG.info("User: {} has updated profile", user.getLogin());
             return userRepository.save(user);
         }
+        LOG.warn("User: {} has tried updated profile, but failed.", user.getLogin());
         throw new IllegalStateException();
     }
 
@@ -85,13 +96,16 @@ public class UserService {
         if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user)) {
             User updateUser = getUserByLogin(user.getLogin());
             updateUser.setEmail(user.getEmail());
+            LOG.info("User {} has changed email address.", user.getLogin());
             return userRepository.save(updateUser);
         }
+        LOG.warn("User: {} has tired to changed email address, but failed.", user.getLogin());
         throw new IllegalStateException();
     }
 
     public void delete(final User user) {
         userRepository.delete(user);
+        LOG.warn("User: {} has been deleted.", user.getLogin());
     }
 
     private boolean isUserAlreadyInDatabase(User user) {
