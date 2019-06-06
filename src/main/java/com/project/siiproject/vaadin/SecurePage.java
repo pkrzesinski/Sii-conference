@@ -1,6 +1,5 @@
 package com.project.siiproject.vaadin;
 
-import com.project.siiproject.feature.emailsender.EmailSender;
 import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
@@ -15,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.vaadin.spring.annotation.PrototypeScope;
 
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 @PrototypeScope
@@ -46,13 +44,11 @@ public class SecurePage extends VerticalLayout implements View {
 
         buttonChangeEmail.addClickListener(clickEvent -> {
             try {
-                user.setEmail(email.getValue());
-                userService.emailUpdate(user);
+                User userUpdatedEmail = userService.emailUpdate(user, email.getValue());
+                updateSession(userUpdatedEmail);
                 Notification.show("Adres email został zmienniony");
-                LOG.info("User: {} has changed email.", user.getLogin());
             } catch (IllegalStateException e) {
                 Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
-                LOG.warn("User: {} has tried to change email, but failed. ", user.getLogin() + e);
             }
         });
 
@@ -69,8 +65,7 @@ public class SecurePage extends VerticalLayout implements View {
             if (selectedLectureToBeRemoved != null) {
                 try {
                     User userRemovedLecture = userService.lectureToRemove(user, selectedLectureToBeRemoved);
-                    VaadinSession.getCurrent().setAttribute("user", userRemovedLecture);
-                    Page.getCurrent().reload();
+                    updateSession(userRemovedLecture);
                 } catch (IllegalStateException e) {
                     Notification.show("Nie można usunąć", Notification.Type.ERROR_MESSAGE);
                     LOG.warn("User: {} unable to remove lecture {} ", user.getLogin(), selectedLectureToBeRemoved.getTitle());
@@ -88,9 +83,8 @@ public class SecurePage extends VerticalLayout implements View {
 
             if (selectedLecture != null) {
                 try {
-                    userService.addNewLecture(user, selectedLecture);
-                    VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
-                    Page.getCurrent().reload();
+                    User userNewLecture = userService.addNewLecture(user, selectedLecture);
+                    updateSession(userNewLecture);
                 } catch (IllegalStateException e) {
                     Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
                 } finally {
@@ -101,6 +95,11 @@ public class SecurePage extends VerticalLayout implements View {
 
         buttonsUnderGrid.addComponents(buttonAddLectureToUser, buttonRemoveLecture);
         layout.addComponents(formLayout, grid, buttonsUnderGrid);
+    }
+
+    private void updateSession(User user) {
+        VaadinSession.getCurrent().setAttribute("user", user);
+        Page.getCurrent().reload();
     }
 
     private void setupLayout() {
@@ -115,7 +114,7 @@ public class SecurePage extends VerticalLayout implements View {
         buttonLogout.addStyleName(ValoTheme.BUTTON_DANGER);
 
         buttonLogout.addClickListener(clickEvent -> {
-            LOG.info("User " + user.getLogin() + " logged out.");
+            LOG.info("User: {} logged out.", user.getLogin());
             VaadinSession.getCurrent().setAttribute("user", null);
             getUI().getNavigator().navigateTo("");
         });
@@ -141,7 +140,7 @@ public class SecurePage extends VerticalLayout implements View {
         setCaption("Zalogowany użytkownik : " + user.getLogin().toString());
 
         if (user != null) {
-            LOG.info("User " + user.getLogin() + " has opened user's page");
+            LOG.info("User {} has opened user's page", user.getLogin());
             email.setValue(user.getEmail());
 
             grid.setItems(user.getLectures());

@@ -101,11 +101,11 @@ public class UserService {
         throw new IllegalStateException();
     }
 
-    public void emailUpdate(User user) {
-        if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user) && isEmailValid(user.getEmail())) {
-            user.setEmail(user.getEmail());
+    public User emailUpdate(User user, String newEmail) {
+        if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user) && isEmailValid(newEmail)) {
+            user.setEmail(newEmail);
             LOG.info("User {} has changed email address.", user.getLogin());
-            userRepository.save(user);
+            return userRepository.save(user);
         } else {
             LOG.warn("User: {} has tired to changed email address, but failed.", user.getLogin());
             throw new IllegalStateException();
