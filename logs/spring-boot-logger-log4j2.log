@@ -1,73 +1,203 @@
-2019-06-06 12:47:06,209 INFO o.s.b.StartupInfoLogger [main] Starting SiiprojectApplication on pawel-ThinkPad-T460s with PID 10082 (/home/pawel/IdeaProjects/sii-project/target/classes started by pawel in /home/pawel/IdeaProjects/sii-project)
-2019-06-06 12:47:06,238 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
-2019-06-06 12:47:07,524 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-06-06 12:47:07,584 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 55ms. Found 2 repository interfaces.
-2019-06-06 12:47:07,672 INFO o.s.c.a.ConfigurationClassPostProcessor [main] Cannot enhance @Configuration bean definition 'com.vaadin.spring.VaadinConfiguration' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
-2019-06-06 12:47:07,974 INFO o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$36b8b8f9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-06-06 12:47:07,996 INFO o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$b639062b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-2019-06-06 12:47:08,287 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
-2019-06-06 12:47:08,301 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
-2019-06-06 12:47:08,313 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
-2019-06-06 12:47:08,314 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.19]
-2019-06-06 12:47:08,447 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
-2019-06-06 12:47:08,447 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2086 ms
-2019-06-06 12:47:08,469 INFO c.v.s.b.i.VaadinServletConfiguration [main] Registering Vaadin servlet
-2019-06-06 12:47:08,469 INFO c.v.s.b.i.VaadinServletConfiguration [main] Servlet will be mapped to URLs [/vaadinServlet/*, /VAADIN/*]
-2019-06-06 12:47:08,479 INFO c.v.s.b.i.VaadinServletConfiguration [main] Setting servlet init parameters
-2019-06-06 12:47:08,480 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [productionMode] = [true]
-2019-06-06 12:47:08,480 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [resourceCacheTime] = [3600]
-2019-06-06 12:47:08,480 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [heartbeatInterval] = [300]
-2019-06-06 12:47:08,481 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [closeIdleSessions] = [false]
-2019-06-06 12:47:08,782 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
-2019-06-06 12:47:08,887 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
-2019-06-06 12:47:08,933 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
+2019-06-06 15:27:01,299 INFO o.s.b.StartupInfoLogger [main] Starting SiiprojectApplication on pawel-ThinkPad-T460s with PID 6245 (/home/pawel/IdeaProjects/sii-project/target/classes started by pawel in /home/pawel/IdeaProjects/sii-project)
+2019-06-06 15:27:01,315 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
+2019-06-06 15:27:03,061 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-06-06 15:27:03,194 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 111ms. Found 2 repository interfaces.
+2019-06-06 15:27:03,363 INFO o.s.c.a.ConfigurationClassPostProcessor [main] Cannot enhance @Configuration bean definition 'com.vaadin.spring.VaadinConfiguration' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2019-06-06 15:27:03,739 INFO o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$7f66547] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-06-06 15:27:03,766 INFO o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$8776b279] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-06-06 15:27:04,118 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2019-06-06 15:27:04,137 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2019-06-06 15:27:04,151 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2019-06-06 15:27:04,152 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-06-06 15:27:04,281 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2019-06-06 15:27:04,282 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2858 ms
+2019-06-06 15:27:04,315 INFO c.v.s.b.i.VaadinServletConfiguration [main] Registering Vaadin servlet
+2019-06-06 15:27:04,316 INFO c.v.s.b.i.VaadinServletConfiguration [main] Servlet will be mapped to URLs [/vaadinServlet/*, /VAADIN/*]
+2019-06-06 15:27:04,339 INFO c.v.s.b.i.VaadinServletConfiguration [main] Setting servlet init parameters
+2019-06-06 15:27:04,340 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [productionMode] = [true]
+2019-06-06 15:27:04,342 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [resourceCacheTime] = [3600]
+2019-06-06 15:27:04,342 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [heartbeatInterval] = [300]
+2019-06-06 15:27:04,344 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [closeIdleSessions] = [false]
+2019-06-06 15:27:04,820 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2019-06-06 15:27:04,943 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2019-06-06 15:27:04,994 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
 	name: default
 	...]
-2019-06-06 12:47:08,971 INFO o.h.Version [main] HHH000412: Hibernate Core {5.3.10.Final}
-2019-06-06 12:47:08,972 INFO o.h.c.Environment [main] HHH000206: hibernate.properties not found
-2019-06-06 12:47:09,058 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
-2019-06-06 12:47:09,141 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
-2019-06-06 12:47:09,728 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2019-06-06 12:47:10,455 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2019-06-06 12:47:10,854 INFO s.d.s.w.PropertySourcedRequestMappingHandlerMapping [main] Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
-2019-06-06 12:47:11,003 INFO o.s.s.c.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
-2019-06-06 12:47:11,125 INFO c.v.s.b.i.VaadinServletConfiguration [main] Checking the application context for Vaadin UI mappings
-2019-06-06 12:47:11,129 INFO c.v.s.b.i.VaadinServletConfiguration [main] Registering Vaadin servlet of type [com.vaadin.spring.server.SpringVaadinServlet]
-2019-06-06 12:47:11,134 INFO c.v.s.b.i.VaadinServletConfiguration [main] Forwarding @SpringUI URLs from {//**=org.springframework.web.servlet.mvc.ServletForwardingController@7df1fc5a, /=org.springframework.web.servlet.mvc.ServletForwardingController@7df1fc5a}
-2019-06-06 12:47:11,390 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
-2019-06-06 12:47:11,403 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
-2019-06-06 12:47:11,467 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
-2019-06-06 12:47:11,646 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_1
-2019-06-06 12:47:11,655 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: saveUsingPOST_1
-2019-06-06 12:47:11,658 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: updateUsingPUT_1
-2019-06-06 12:47:11,676 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
-2019-06-06 12:47:11,688 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
-2019-06-06 12:47:11,693 INFO o.s.b.StartupInfoLogger [main] Started SiiprojectApplication in 6.287 seconds (JVM running for 7.383)
-2019-06-06 12:47:20,329 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-06-06 12:47:20,331 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
-2019-06-06 12:47:20,357 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 24 ms
-2019-06-06 12:47:20,727 INFO o.h.h.i.QueryTranslatorFactoryInitiator [http-nio-8080-exec-4] HHH000397: Using ASTQueryTranslatorFactory
-2019-06-06 12:47:28,092 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User with login pawel and email pawel@pawel.com was found in database
-2019-06-06 12:47:28,095 INFO c.p.s.v.LoginUser [http-nio-8080-exec-9] User started logging in with following credentials pawel pawel@pawel.com
-2019-06-06 12:47:28,097 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User with login: pawel was looked in database
-2019-06-06 12:47:28,107 INFO c.p.s.v.SecurePage [http-nio-8080-exec-9] User pawel has opened user's page
-2019-06-06 12:47:30,823 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with login: pawel was looked in database
-2019-06-06 12:47:30,838 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with ID: 1 was looked in database
-2019-06-06 12:47:30,858 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User: pawel has updated profile
-2019-06-06 12:47:30,906 INFO c.p.s.v.SecurePage [http-nio-8080-exec-3] User pawel has deleted lecture Alcohol use and burden for 195 countries and territories, 1990–2016: a systematic analysis for the Global Burden of Disease Study 2016
-2019-06-06 12:47:30,907 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with login: pawel was looked in database
-2019-06-06 12:47:30,915 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with login: pawel was looked in database
-2019-06-06 12:47:30,921 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with ID: 1 was looked in database
-2019-06-06 12:47:30,925 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User: pawel has updated profile
-2019-06-06 12:47:30,928 INFO c.p.s.v.SecurePage [http-nio-8080-exec-3] User pawel has deleted lecture The biomass distribution on Earth
-2019-06-06 12:47:30,929 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with login: pawel was looked in database
-2019-06-06 12:47:31,069 INFO c.p.s.v.SecurePage [http-nio-8080-exec-6] User pawel has opened user's page
-2019-06-06 12:47:47,275 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User with login: pawel was looked in database
-2019-06-06 12:47:47,284 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User: pawel has added lecture: Alcohol use and burden for 195 countries and territories, 1990–2016: a systematic analysis for the Global Burden of Disease Study 2016
-2019-06-06 12:47:47,301 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User with login: pawel was looked in database
-2019-06-06 12:47:47,310 INFO c.p.s.f.e.EmailSender [http-nio-8080-exec-9] Email to pawel@pawel.com has been sent.
-2019-06-06 12:47:47,521 INFO c.p.s.v.SecurePage [http-nio-8080-exec-1] User pawel has opened user's page
-2019-06-06 12:56:52,713 INFO o.s.s.c.ExecutorConfigurationSupport [Thread-2] Shutting down ExecutorService 'applicationTaskExecutor'
-2019-06-06 12:56:52,719 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-2] Closing JPA EntityManagerFactory for persistence unit 'default'
-2019-06-06 12:56:52,723 INFO c.z.h.HikariDataSource [Thread-2] HikariPool-1 - Shutdown initiated...
-2019-06-06 12:56:53,233 INFO c.z.h.HikariDataSource [Thread-2] HikariPool-1 - Shutdown completed.
+2019-06-06 15:27:05,051 INFO o.h.Version [main] HHH000412: Hibernate Core {5.3.10.Final}
+2019-06-06 15:27:05,053 INFO o.h.c.Environment [main] HHH000206: hibernate.properties not found
+2019-06-06 15:27:05,149 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-06-06 15:27:05,243 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2019-06-06 15:27:06,129 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-06-06 15:27:07,035 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2019-06-06 15:27:07,611 INFO s.d.s.w.PropertySourcedRequestMappingHandlerMapping [main] Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-06-06 15:27:07,777 INFO o.s.s.c.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2019-06-06 15:27:07,958 INFO c.v.s.b.i.VaadinServletConfiguration [main] Checking the application context for Vaadin UI mappings
+2019-06-06 15:27:07,966 INFO c.v.s.b.i.VaadinServletConfiguration [main] Registering Vaadin servlet of type [com.vaadin.spring.server.SpringVaadinServlet]
+2019-06-06 15:27:07,974 INFO c.v.s.b.i.VaadinServletConfiguration [main] Forwarding @SpringUI URLs from {//**=org.springframework.web.servlet.mvc.ServletForwardingController@41a6ab50, /=org.springframework.web.servlet.mvc.ServletForwardingController@41a6ab50}
+2019-06-06 15:27:08,290 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
+2019-06-06 15:27:08,303 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
+2019-06-06 15:27:08,330 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
+2019-06-06 15:27:08,515 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_1
+2019-06-06 15:27:08,526 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: saveUsingPOST_1
+2019-06-06 15:27:08,529 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: updateUsingPUT_1
+2019-06-06 15:27:08,551 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2019-06-06 15:27:08,569 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2019-06-06 15:27:08,572 INFO o.s.b.StartupInfoLogger [main] Started SiiprojectApplication in 8.335 seconds (JVM running for 10.194)
+2019-06-06 15:29:29,097 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-06-06 15:29:29,097 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2019-06-06 15:29:29,112 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 15 ms
+2019-06-06 15:29:29,468 INFO o.h.h.i.QueryTranslatorFactoryInitiator [http-nio-8080-exec-3] HHH000397: Using ASTQueryTranslatorFactory
+2019-06-06 15:29:29,666 ERROR c.v.s.DefaultErrorHandler [http-nio-8080-exec-3] 
+java.lang.NullPointerException: null
+	at com.project.siiproject.vaadin.SecurePage.enter(SecurePage.java:174) ~[classes/:?]
+	at com.vaadin.navigator.Navigator.performNavigateTo(Navigator.java:778) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.navigator.Navigator.lambda$navigateTo$9a874efd$1(Navigator.java:702) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.navigator.Navigator.runAfterLeaveConfirmation(Navigator.java:726) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.navigator.Navigator.navigateTo(Navigator.java:701) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.navigator.Navigator.navigateTo(Navigator.java:678) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.ui.UI.doInit(UI.java:775) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.communication.UIInitHandler.getBrowserDetailsUI(UIInitHandler.java:218) [vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.communication.UIInitHandler.synchronizedHandleRequest(UIInitHandler.java:76) [vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.SynchronizedRequestHandler.handleRequest(SynchronizedRequestHandler.java:40) [vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.VaadinService.handleRequest(VaadinService.java:1602) [vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.VaadinServlet.service(VaadinServlet.java:445) [vaadin-server-8.8.2.jar:8.8.2]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:712) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:459) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:352) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:312) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.springframework.web.servlet.mvc.ServletForwardingController.handleRequestInternal(ServletForwardingController.java:141) [spring-webmvc-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.servlet.mvc.AbstractController.handleRequest(AbstractController.java:177) [spring-webmvc-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter.handle(SimpleControllerHandlerAdapter.java:52) [spring-webmvc-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1039) [spring-webmvc-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:942) [spring-webmvc-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1005) [spring-webmvc-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:908) [spring-webmvc-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:660) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:882) [spring-webmvc-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) [tomcat-embed-websocket-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:200) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:490) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:836) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1747) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) [?:?]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) [?:?]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at java.lang.Thread.run(Thread.java:834) [?:?]
+2019-06-06 15:29:40,332 ERROR c.v.s.DefaultErrorHandler [http-nio-8080-exec-5] 
+java.lang.NullPointerException: null
+	at com.project.siiproject.vaadin.SecurePage.lambda$addLogoutButton$61446b05$1(SecurePage.java:151) ~[classes/:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:566) ~[?:?]
+	at com.vaadin.event.ListenerMethod.receiveEvent(ListenerMethod.java:499) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.event.EventRouter.fireEvent(EventRouter.java:273) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.event.EventRouter.fireEvent(EventRouter.java:237) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.AbstractClientConnector.fireEvent(AbstractClientConnector.java:1014) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.ui.Button.fireClick(Button.java:384) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.ui.Button$1.click(Button.java:57) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:566) ~[?:?]
+	at com.vaadin.server.ServerRpcManager.applyInvocation(ServerRpcManager.java:155) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.ServerRpcManager.applyInvocation(ServerRpcManager.java:116) ~[vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.communication.ServerRpcHandler.handleInvocation(ServerRpcHandler.java:445) [vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.communication.ServerRpcHandler.handleInvocations(ServerRpcHandler.java:410) [vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.communication.ServerRpcHandler.handleRpc(ServerRpcHandler.java:274) [vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.communication.UidlRequestHandler.synchronizedHandleRequest(UidlRequestHandler.java:90) [vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.SynchronizedRequestHandler.handleRequest(SynchronizedRequestHandler.java:40) [vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.VaadinService.handleRequest(VaadinService.java:1602) [vaadin-server-8.8.2.jar:8.8.2]
+	at com.vaadin.server.VaadinServlet.service(VaadinServlet.java:445) [vaadin-server-8.8.2.jar:8.8.2]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) [tomcat-embed-websocket-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-5.1.7.RELEASE.jar:5.1.7.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:200) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:490) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:836) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1747) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) [?:?]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) [?:?]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.19.jar:9.0.19]
+	at java.lang.Thread.run(Thread.java:834) [?:?]
+2019-06-06 15:29:52,349 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User: pawel, email: pawel@pawel.pl was not found in database
+2019-06-06 15:29:52,356 WARN c.p.s.v.LoginUser [http-nio-8080-exec-3] User failed to log in with following credentials pawel pawel@pawel.pl
+2019-06-06 15:30:09,020 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User with email: pawel@pawel.pl was looked in database
+2019-06-06 15:30:09,040 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User: pawel was looked in database
+2019-06-06 15:30:09,075 WARN c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User: pawel is already in database, failed to save.
+2019-06-06 15:30:09,078 WARN c.p.s.v.LoginUser [http-nio-8080-exec-9] New user failed to create account pawel pawel@pawel.pl
+2019-06-06 15:30:48,555 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-4] User: pawel, email: pawel@pawel.com was found in database
+2019-06-06 15:30:48,558 INFO c.p.s.v.LoginUser [http-nio-8080-exec-4] User started logging in with following credentials pawel pawel@pawel.com
+2019-06-06 15:30:48,560 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-4] User: pawel was looked in database
+2019-06-06 15:30:48,576 INFO c.p.s.v.SecurePage [http-nio-8080-exec-4] User pawel has opened user's page
+2019-06-06 15:30:54,930 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-7] User: pawel was looked in database
+2019-06-06 15:30:54,941 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-7] User with ID: 1 was looked in database
+2019-06-06 15:30:54,962 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-7] User: pawel has updated profile
+2019-06-06 15:30:54,981 INFO c.p.s.v.SecurePage [http-nio-8080-exec-7] User: pawel has deleted lecture Alcohol use and burden for 195 countries and territories, 1990–2016: a systematic analysis for the Global Burden of Disease Study 2016.
+2019-06-06 15:30:54,982 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-7] User: pawel was looked in database
+2019-06-06 15:30:55,106 INFO c.p.s.v.SecurePage [http-nio-8080-exec-10] User pawel has opened user's page
+2019-06-06 15:31:22,993 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-4] User: pawel was looked in database
+2019-06-06 15:31:23,002 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-4] User: pawel has enrolled for lecture: Alcohol use and burden for 195 countries and territories, 1990–2016: a systematic analysis for the Global Burden of Disease Study 2016
+2019-06-06 15:31:23,014 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-4] User: pawel was looked in database
+2019-06-06 15:31:23,019 INFO c.p.s.f.e.EmailSender [http-nio-8080-exec-4] Email to pawel@pawel.com has been sent.
+2019-06-06 15:31:23,139 INFO c.p.s.v.SecurePage [http-nio-8080-exec-7] User pawel has opened user's page
+2019-06-06 15:31:36,253 INFO c.p.s.v.SecurePage [http-nio-8080-exec-9] User pawel logged out.

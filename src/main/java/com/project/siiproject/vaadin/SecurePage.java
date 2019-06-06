@@ -56,14 +56,14 @@ public class SecurePage extends VerticalLayout implements View {
                     user.setEmail(email.getValue());
                     userService.emailUpdate(user);
                     Notification.show("Adres email został zmienniony");
-                    LOG.info("User " + user.getLogin() + " has changed email.");
+                    LOG.info("User: {} has changed email.", user.getLogin());
                 } catch (IllegalStateException e) {
                     Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
                     LOG.warn("Illegal State Exception occurred" + e);
                 }
             } else {
                 Notification.show("Błędny format adresu email!", Notification.Type.ERROR_MESSAGE);
-                LOG.warn("User " + user.getLogin() + " has tried to change email address, but wrong format was inserted.");
+                LOG.warn("User: {} has tried to change email address, but wrong format was inserted.", user.getLogin());
             }
         });
 
@@ -88,7 +88,7 @@ public class SecurePage extends VerticalLayout implements View {
                         user.setLectures(newList);
                         userService.update(user);
 
-                        LOG.info("User " + user.getLogin() + " has deleted lecture " + selectedLectureToBeRemoved.getTitle());
+                        LOG.info("User: {} has deleted lecture {}.", user.getLogin(), selectedLectureToBeRemoved.getTitle());
 
                         VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
                         grid.deselectAll();
@@ -96,7 +96,6 @@ public class SecurePage extends VerticalLayout implements View {
                     } catch (IllegalStateException e) {
                         grid.deselectAll();
                         Notification.show("Nie można usunąć", Notification.Type.ERROR_MESSAGE);
-                        LOG.warn("User " + user.getLogin() + " was unable to delete lecture " + selectedLectureToBeRemoved);
                     }
                 });
             }
@@ -128,7 +127,7 @@ public class SecurePage extends VerticalLayout implements View {
                         Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
                     } catch (IOException e) {
                         Notification.show("Wysłanie maila się niepowiodło");
-                        LOG.warn("Confirmation email was not send to " + user.getLogin());
+                        LOG.warn("Confirmation email was not send to {}", user.getLogin());
                     }
                 });
             }
