@@ -1,5 +1,6 @@
 package com.project.siiproject.feature.user.service;
 
+import com.project.siiproject.feature.emailsender.EmailSender;
 import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.user.dao.UserRepository;
 import com.project.siiproject.feature.user.model.User;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -22,6 +24,8 @@ public class UserService {
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private final UserRepository userRepository;
+    private EmailSender emailSender = new EmailSender();
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -57,7 +61,7 @@ public class UserService {
         throw new IllegalStateException();
     }
 
-    public void addNewLecture(User user, Lecture lecture) {
+    public User addNewLecture(User user, Lecture lecture) {
 
         Optional<Lecture> lectureOptional = user.getLectures().stream()
                 .filter(lecture::equals)
@@ -72,7 +76,10 @@ public class UserService {
         } else {
             user.getLectures().add(lecture);
             LOG.info("User: {} has enrolled for lecture: {}", user.getLogin(), lecture.getTitle());
-            update(user);
+            emailSender.sendEmail(user.getEmail(), "Zapisy na konferencję 01-02.06.2019",
+                    "Serdecznie zapraszamy na wykład: " + lecture.getTitle() + ", dnia" +
+                            lecture.getLectureDate().format(formatter) + "\nDo zobaczenia!");
+            return update(user);
         }
     }
 

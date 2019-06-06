@@ -29,7 +29,6 @@ public class SecurePage extends VerticalLayout implements View {
     private VerticalLayout layout = new VerticalLayout();
     private Grid<Lecture> grid = new Grid<>();
     private TextField email = new TextField("Email");
-    private EmailSender emailSender = new EmailSender();
 
     public SecurePage(UserService userService, Grid<Lecture> mainGrid) {
         setupLayout();
@@ -84,26 +83,16 @@ public class SecurePage extends VerticalLayout implements View {
         Button buttonAddLectureToUser = new Button("Dodaj wykład");
         buttonAddLectureToUser.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
-        buttonAddLectureToUser.addClickListener(clickEvent ->
-
-        {
+        buttonAddLectureToUser.addClickListener(clickEvent -> {
             Lecture selectedLecture = mainGrid.asSingleSelect().getValue();
 
             if (selectedLecture != null) {
-
-                User userLectureToSave = userService.getUserByLogin(user.getLogin());
                 try {
-                    userService.addNewLecture(userLectureToSave, selectedLecture);
+                    userService.addNewLecture(user, selectedLecture);
                     VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
-                    emailSender.sendEmail(user.getEmail(), "Zapisy na konferencję 01-02.06.2019",
-                            "Serdecznie zapraszamy na wykład: " + selectedLecture.getTitle() + ", dnia" +
-                                    selectedLecture.getLectureDate().format(formatter) + "\nDo zobaczenia!");
                     Page.getCurrent().reload();
                 } catch (IllegalStateException e) {
                     Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
-                } catch (IOException e) {
-                    Notification.show("Wysłanie maila się nie powiodło");
-                    LOG.warn("Confirmation email was not send to {}", user.getLogin());
                 } finally {
                     mainGrid.deselectAll();
                 }

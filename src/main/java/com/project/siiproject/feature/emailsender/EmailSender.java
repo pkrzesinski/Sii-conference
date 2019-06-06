@@ -19,15 +19,21 @@ public class EmailSender {
     private String message;
     private LocalDateTime sendTime = LocalDateTime.now();
 
-    public void sendEmail(String emailAddress, String topic, String message) throws IOException {
+    public void sendEmail(String emailAddress, String topic, String message) {
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(EMAIL_CONTAINER, true));
-        writer.write(sendTime.format(formatter) + "\n");
-        writer.write("Sent to: " + emailAddress + "\n");
-        writer.write("Topic: " + topic + "\n");
-        writer.write(message + "\n\n");
-        writer.write("------------------------------------------------------\n\n");
-        writer.close();
-        LOG.info("Email to {} has been sent.", emailAddress);
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(EMAIL_CONTAINER, true));
+            writer.write(sendTime.format(formatter) + "\n");
+            writer.write("Sent to: " + emailAddress + "\n");
+            writer.write("Topic: " + topic + "\n");
+            writer.write(message + "\n\n");
+            writer.write("------------------------------------------------------\n\n");
+            writer.close();
+            LOG.info("Email to {} has been sent.", emailAddress);
+        } catch (IOException e) {
+            LOG.warn("Email to {} failed to send.", emailAddress);
+        }
+
     }
 }
