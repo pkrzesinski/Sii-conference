@@ -11,12 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional
 public class UserService {
 
     private static final Logger LOG = LogManager.getLogger(UserService.class);
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private final UserRepository userRepository;
 
     @Autowired
@@ -91,7 +95,7 @@ public class UserService {
     }
 
     public void emailUpdate(User user) {
-        if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user)) {
+        if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user)&& isEmailValid(user.getEmail())) {
             user.setEmail(user.getEmail());
             LOG.info("User {} has changed email address.", user.getLogin());
             userRepository.save(user);
@@ -126,5 +130,10 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    private boolean isEmailValid(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
     }
 }

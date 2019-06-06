@@ -18,16 +18,12 @@ import org.vaadin.spring.annotation.PrototypeScope;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @PrototypeScope
 @SpringView(name = SecurePage.VIEW_NAME)
 public class SecurePage extends VerticalLayout implements View {
 
     private static final Logger LOG = LogManager.getLogger(SecurePage.class);
-    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final String VIEW_NAME = "userPage";
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
     private User user;
@@ -51,19 +47,14 @@ public class SecurePage extends VerticalLayout implements View {
         buttonChangeEmail.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         buttonChangeEmail.addClickListener(clickEvent -> {
-            if (emailValidate(email.getValue())) {
-                try {
-                    user.setEmail(email.getValue());
-                    userService.emailUpdate(user);
-                    Notification.show("Adres email został zmienniony");
-                    LOG.info("User: {} has changed email.", user.getLogin());
-                } catch (IllegalStateException e) {
-                    Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
-                    LOG.warn("User: {} has tried to change email, but failed. ", user.getLogin() + e);
-                }
-            } else {
-                Notification.show("Błędny format adresu email!", Notification.Type.ERROR_MESSAGE);
-                LOG.warn("User: {} has tried to change email address, but wrong format was inserted.", user.getLogin());
+            try {
+                user.setEmail(email.getValue());
+                userService.emailUpdate(user);
+                Notification.show("Adres email został zmienniony");
+                LOG.info("User: {} has changed email.", user.getLogin());
+            } catch (IllegalStateException e) {
+                Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
+                LOG.warn("User: {} has tried to change email, but failed. ", user.getLogin() + e);
             }
         });
 
@@ -75,21 +66,17 @@ public class SecurePage extends VerticalLayout implements View {
         buttonRemoveLecture.addStyleName(ValoTheme.BUTTON_DANGER);
 
         buttonRemoveLecture.addClickListener(clickEvent -> {
-
             Lecture selectedLectureToBeRemoved = grid.asSingleSelect().getValue();
+
             if (selectedLectureToBeRemoved != null) {
-
-                User userLectureToBeRemoved = userService.getUserByLogin(user.getLogin());
                 try {
-                    List<Lecture> newList = userLectureToBeRemoved.getLectures();
+                    List<Lecture> newList = user.getLectures();
                     newList.removeIf(lecture -> lecture.getTitle().equals(selectedLectureToBeRemoved.getTitle()));
-
                     user.setLectures(newList);
-                    userService.update(user);
-
+                    User updatedUser = userService.update(user);
                     LOG.info("User: {} has deleted lecture {}.", user.getLogin(), selectedLectureToBeRemoved.getTitle());
 
-                    VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
+                    VaadinSession.getCurrent().setAttribute("user", updatedUser);
                     Page.getCurrent().reload();
                 } catch (IllegalStateException e) {
                     Notification.show("Nie można usunąć", Notification.Type.ERROR_MESSAGE);
@@ -102,7 +89,9 @@ public class SecurePage extends VerticalLayout implements View {
         Button buttonAddLectureToUser = new Button("Dodaj wykład");
         buttonAddLectureToUser.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
-        buttonAddLectureToUser.addClickListener(clickEvent -> {
+        buttonAddLectureToUser.addClickListener(clickEvent ->
+
+        {
             Lecture selectedLecture = mainGrid.asSingleSelect().getValue();
 
             if (selectedLecture != null) {
@@ -177,10 +166,5 @@ public class SecurePage extends VerticalLayout implements View {
             grid.addColumn(Lecture::getPath).setCaption("Ścieżka").setWidthUndefined();
             grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined();
         }
-    }
-
-    private boolean emailValidate(String emailStr) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-        return matcher.find();
     }
 }
