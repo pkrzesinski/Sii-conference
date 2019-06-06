@@ -201,3 +201,7 @@ java.lang.NullPointerException: null
 2019-06-06 15:31:23,019 INFO c.p.s.f.e.EmailSender [http-nio-8080-exec-4] Email to pawel@pawel.com has been sent.
 2019-06-06 15:31:23,139 INFO c.p.s.v.SecurePage [http-nio-8080-exec-7] User pawel has opened user's page
 2019-06-06 15:31:36,253 INFO c.p.s.v.SecurePage [http-nio-8080-exec-9] User pawel logged out.
+2019-06-06 15:43:35,246 INFO o.s.s.c.ExecutorConfigurationSupport [Thread-2] Shutting down ExecutorService 'applicationTaskExecutor'
+2019-06-06 15:43:35,250 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-2] Closing JPA EntityManagerFactory for persistence unit 'default'
+2019-06-06 15:43:35,255 INFO c.z.h.HikariDataSource [Thread-2] HikariPool-1 - Shutdown initiated...
+2019-06-06 15:43:35,487 INFO c.z.h.HikariDataSource [Thread-2] HikariPool-1 - Shutdown completed.
