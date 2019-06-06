@@ -74,65 +74,59 @@ public class SecurePage extends VerticalLayout implements View {
         Button buttonRemoveLecture = new Button("Usuń");
         buttonRemoveLecture.addStyleName(ValoTheme.BUTTON_DANGER);
 
-        grid.asSingleSelect().addValueChangeListener(valueChangeEvent -> {
-            Lecture selectedLectureToBeRemoved = valueChangeEvent.getValue();
+        buttonRemoveLecture.addClickListener(clickEvent -> {
 
+            Lecture selectedLectureToBeRemoved = grid.asSingleSelect().getValue();
             if (selectedLectureToBeRemoved != null) {
 
-                buttonRemoveLecture.addClickListener(clickEvent -> {
-                    User userLectureToBeRemoved = userService.getUserByLogin(user.getLogin());
-                    try {
-                        List<Lecture> newList = userLectureToBeRemoved.getLectures();
-                        newList.removeIf(lecture -> lecture.getTitle().equals(selectedLectureToBeRemoved.getTitle()));
+                User userLectureToBeRemoved = userService.getUserByLogin(user.getLogin());
+                try {
+                    List<Lecture> newList = userLectureToBeRemoved.getLectures();
+                    newList.removeIf(lecture -> lecture.getTitle().equals(selectedLectureToBeRemoved.getTitle()));
 
-                        user.setLectures(newList);
-                        userService.update(user);
+                    user.setLectures(newList);
+                    userService.update(user);
 
-                        LOG.info("User: {} has deleted lecture {}.", user.getLogin(), selectedLectureToBeRemoved.getTitle());
+                    LOG.info("User: {} has deleted lecture {}.", user.getLogin(), selectedLectureToBeRemoved.getTitle());
 
-                        VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
-                        grid.deselectAll();
-                        Page.getCurrent().reload();
-                    } catch (IllegalStateException e) {
-                        grid.deselectAll();
-                        Notification.show("Nie można usunąć", Notification.Type.ERROR_MESSAGE);
-                    }
-                });
+                    VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
+                    Page.getCurrent().reload();
+                } catch (IllegalStateException e) {
+                    Notification.show("Nie można usunąć", Notification.Type.ERROR_MESSAGE);
+                } finally {
+                    grid.deselectAll();
+                }
             }
         });
 
         Button buttonAddLectureToUser = new Button("Dodaj wykład");
         buttonAddLectureToUser.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
-        buttonsUnderGrid.addComponents(buttonAddLectureToUser, buttonRemoveLecture);
+        buttonAddLectureToUser.addClickListener(clickEvent -> {
+            Lecture selectedLecture = mainGrid.asSingleSelect().getValue();
 
-        mainGrid.asSingleSelect().addValueChangeListener(event -> {
-
-            Lecture selectedLecture = event.getValue();
             if (selectedLecture != null) {
 
-                buttonAddLectureToUser.addClickListener(clickEvent -> {
-
-                    User userLectureToSave = userService.getUserByLogin(user.getLogin());
-                    try {
-                        userService.addNewLecture(userLectureToSave, selectedLecture);
-                        VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
-                        emailSender.sendEmail(user.getEmail(), "Zapisy na konferencję 01-02.06.2019",
-                                "Serdecznie zapraszamy na wykład: " + selectedLecture.getTitle() + ", dnia" +
-                                        selectedLecture.getLectureDate().format(formatter) + "\nDo zobaczenia!");
-                        mainGrid.deselectAll();
-                        Page.getCurrent().reload();
-                    } catch (IllegalStateException e) {
-                        mainGrid.deselectAll();
-                        Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
-                    } catch (IOException e) {
-                        Notification.show("Wysłanie maila się niepowiodło");
-                        LOG.warn("Confirmation email was not send to {}", user.getLogin());
-                    }
-                });
+                User userLectureToSave = userService.getUserByLogin(user.getLogin());
+                try {
+                    userService.addNewLecture(userLectureToSave, selectedLecture);
+                    VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
+                    emailSender.sendEmail(user.getEmail(), "Zapisy na konferencję 01-02.06.2019",
+                            "Serdecznie zapraszamy na wykład: " + selectedLecture.getTitle() + ", dnia" +
+                                    selectedLecture.getLectureDate().format(formatter) + "\nDo zobaczenia!");
+                    Page.getCurrent().reload();
+                } catch (IllegalStateException e) {
+                    Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
+                } catch (IOException e) {
+                    Notification.show("Wysłanie maila się nie powiodło");
+                    LOG.warn("Confirmation email was not send to {}", user.getLogin());
+                } finally {
+                    mainGrid.deselectAll();
+                }
             }
         });
 
+        buttonsUnderGrid.addComponents(buttonAddLectureToUser, buttonRemoveLecture);
         layout.addComponents(formLayout, grid, buttonsUnderGrid);
     }
 
