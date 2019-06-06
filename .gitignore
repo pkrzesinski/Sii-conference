@@ -18,4 +18,4 @@ HELP.md
 *.ipr
 
 emails.txt
-*.log
+/logs
