@@ -30,17 +30,17 @@ public class UserService {
     }
 
     public User getUserById(final Long id) {
-        LOG.info("User with ID was looked in database" + id);
+        LOG.info("User with ID: {} was looked in database", id);
         return userRepository.getOne(id);
     }
 
     public User getUserByEmail(final String email) {
-        LOG.info("User with email was looked in database" + email);
+        LOG.info("User with email: {} was looked in database", email);
         return userRepository.findByEmail(email);
     }
 
     public User getUserByLogin(final String login) {
-        LOG.info("User with email was looked in database" + login);
+        LOG.info("User with login: {} was looked in database", login);
         return userRepository.findByLogin(login);
     }
 
@@ -51,7 +51,7 @@ public class UserService {
             return user;
         } else
             LOG.info("User with login " + login + " and email " + email + " was not found in database");
-            throw new IllegalStateException();
+        throw new IllegalStateException();
     }
 
     public User addNewLecture(User user, Lecture lecture) {
@@ -65,25 +65,30 @@ public class UserService {
                 .findFirst();
 
         if (lectureOptional.isPresent() || lectureAtTheSameTime.isPresent() || isLectureFull(lecture)) {
+            LOG.warn("User: " + user.getLogin() + " has tried to add lecture, but failed.");
             throw new IllegalStateException();
         } else {
             user.getLectures().add(lecture);
+            LOG.info("User: " + user.getLogin() + " has added lecture: " + lecture.getTitle());
             return userRepository.save(user);
         }
     }
 
     public User save(final User user) {
         if (isUserAlreadyInDatabase(user)) {
+            LOG.warn("User " + user.getLogin() + " is already in database, cannot save.");
             throw new IllegalStateException();
         }
-        User newUser = new User(user.getLogin(), user.getEmail());
-        return userRepository.save(newUser);
+        LOG.info("New user added to database: " + user.getLogin());
+        return userRepository.save(user);
     }
 
     public User update(User user) {
         if (isUserLoginWithoutChange(user)) {
+            LOG.info(user.getLogin() + " has updated profile");
             return userRepository.save(user);
         }
+        LOG.warn(user.getLogin() + " has tried updated profile, but failed.");
         throw new IllegalStateException();
     }
 
@@ -91,13 +96,16 @@ public class UserService {
         if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user)) {
             User updateUser = getUserByLogin(user.getLogin());
             updateUser.setEmail(user.getEmail());
+            LOG.info("User " + user.getLogin() + " has changed email address.");
             return userRepository.save(updateUser);
         }
+        LOG.warn("User " + user.getLogin() + " has tired to changed email address, but failed.");
         throw new IllegalStateException();
     }
 
     public void delete(final User user) {
         userRepository.delete(user);
+        LOG.warn("User " + user.getLogin() + " has been deleted.");
     }
 
     private boolean isUserAlreadyInDatabase(User user) {
