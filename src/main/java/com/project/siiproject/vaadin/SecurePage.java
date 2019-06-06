@@ -17,7 +17,6 @@ import org.vaadin.spring.annotation.PrototypeScope;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @PrototypeScope
 @SpringView(name = SecurePage.VIEW_NAME)
@@ -70,16 +69,12 @@ public class SecurePage extends VerticalLayout implements View {
 
             if (selectedLectureToBeRemoved != null) {
                 try {
-                    List<Lecture> newList = user.getLectures();
-                    newList.removeIf(lecture -> lecture.getTitle().equals(selectedLectureToBeRemoved.getTitle()));
-                    user.setLectures(newList);
-                    User updatedUser = userService.update(user);
-                    LOG.info("User: {} has deleted lecture {}.", user.getLogin(), selectedLectureToBeRemoved.getTitle());
-
-                    VaadinSession.getCurrent().setAttribute("user", updatedUser);
+                    User userRemovedLecture = userService.lectureToRemove(user, selectedLectureToBeRemoved);
+                    VaadinSession.getCurrent().setAttribute("user", userRemovedLecture);
                     Page.getCurrent().reload();
                 } catch (IllegalStateException e) {
                     Notification.show("Nie można usunąć", Notification.Type.ERROR_MESSAGE);
+                    LOG.warn("User: {} unable to remove lecture {} ", user.getLogin(), selectedLectureToBeRemoved.getTitle());
                 } finally {
                     grid.deselectAll();
                 }

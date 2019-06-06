@@ -95,7 +95,7 @@ public class UserService {
     }
 
     public void emailUpdate(User user) {
-        if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user)&& isEmailValid(user.getEmail())) {
+        if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user) && isEmailValid(user.getEmail())) {
             user.setEmail(user.getEmail());
             LOG.info("User {} has changed email address.", user.getLogin());
             userRepository.save(user);
@@ -108,6 +108,14 @@ public class UserService {
     public void delete(final User user) {
         userRepository.delete(user);
         LOG.warn("User: {} has been deleted.", user.getLogin());
+    }
+
+    public User lectureToRemove(User user, Lecture lecture) {
+        List<Lecture> newList = user.getLectures();
+        newList.removeIf(lectureRemove -> lectureRemove.getTitle().equals(lecture.getTitle()));
+        user.setLectures(newList);
+        LOG.info("User: {} has removed lecture {}.", user.getLogin(), lecture.getTitle());
+        return update(user);
     }
 
     private boolean isUserAlreadyInDatabase(User user) {
