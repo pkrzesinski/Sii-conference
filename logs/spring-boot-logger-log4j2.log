@@ -1,1 +1,73 @@
-2019-06-06 11:43:32,977 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2019-06-06 12:47:06,209 INFO o.s.b.StartupInfoLogger [main] Starting SiiprojectApplication on pawel-ThinkPad-T460s with PID 10082 (/home/pawel/IdeaProjects/sii-project/target/classes started by pawel in /home/pawel/IdeaProjects/sii-project)
+2019-06-06 12:47:06,238 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
+2019-06-06 12:47:07,524 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-06-06 12:47:07,584 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 55ms. Found 2 repository interfaces.
+2019-06-06 12:47:07,672 INFO o.s.c.a.ConfigurationClassPostProcessor [main] Cannot enhance @Configuration bean definition 'com.vaadin.spring.VaadinConfiguration' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2019-06-06 12:47:07,974 INFO o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$36b8b8f9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-06-06 12:47:07,996 INFO o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [main] Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$b639062b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-06-06 12:47:08,287 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2019-06-06 12:47:08,301 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2019-06-06 12:47:08,313 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2019-06-06 12:47:08,314 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-06-06 12:47:08,447 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2019-06-06 12:47:08,447 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2086 ms
+2019-06-06 12:47:08,469 INFO c.v.s.b.i.VaadinServletConfiguration [main] Registering Vaadin servlet
+2019-06-06 12:47:08,469 INFO c.v.s.b.i.VaadinServletConfiguration [main] Servlet will be mapped to URLs [/vaadinServlet/*, /VAADIN/*]
+2019-06-06 12:47:08,479 INFO c.v.s.b.i.VaadinServletConfiguration [main] Setting servlet init parameters
+2019-06-06 12:47:08,480 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [productionMode] = [true]
+2019-06-06 12:47:08,480 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [resourceCacheTime] = [3600]
+2019-06-06 12:47:08,480 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [heartbeatInterval] = [300]
+2019-06-06 12:47:08,481 INFO c.v.s.b.i.VaadinServletConfiguration [main] Set servlet init parameter [closeIdleSessions] = [false]
+2019-06-06 12:47:08,782 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2019-06-06 12:47:08,887 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2019-06-06 12:47:08,933 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-06-06 12:47:08,971 INFO o.h.Version [main] HHH000412: Hibernate Core {5.3.10.Final}
+2019-06-06 12:47:08,972 INFO o.h.c.Environment [main] HHH000206: hibernate.properties not found
+2019-06-06 12:47:09,058 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-06-06 12:47:09,141 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2019-06-06 12:47:09,728 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-06-06 12:47:10,455 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2019-06-06 12:47:10,854 INFO s.d.s.w.PropertySourcedRequestMappingHandlerMapping [main] Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-06-06 12:47:11,003 INFO o.s.s.c.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2019-06-06 12:47:11,125 INFO c.v.s.b.i.VaadinServletConfiguration [main] Checking the application context for Vaadin UI mappings
+2019-06-06 12:47:11,129 INFO c.v.s.b.i.VaadinServletConfiguration [main] Registering Vaadin servlet of type [com.vaadin.spring.server.SpringVaadinServlet]
+2019-06-06 12:47:11,134 INFO c.v.s.b.i.VaadinServletConfiguration [main] Forwarding @SpringUI URLs from {//**=org.springframework.web.servlet.mvc.ServletForwardingController@7df1fc5a, /=org.springframework.web.servlet.mvc.ServletForwardingController@7df1fc5a}
+2019-06-06 12:47:11,390 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
+2019-06-06 12:47:11,403 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
+2019-06-06 12:47:11,467 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
+2019-06-06 12:47:11,646 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_1
+2019-06-06 12:47:11,655 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: saveUsingPOST_1
+2019-06-06 12:47:11,658 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: updateUsingPUT_1
+2019-06-06 12:47:11,676 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2019-06-06 12:47:11,688 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2019-06-06 12:47:11,693 INFO o.s.b.StartupInfoLogger [main] Started SiiprojectApplication in 6.287 seconds (JVM running for 7.383)
+2019-06-06 12:47:20,329 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-06-06 12:47:20,331 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2019-06-06 12:47:20,357 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 24 ms
+2019-06-06 12:47:20,727 INFO o.h.h.i.QueryTranslatorFactoryInitiator [http-nio-8080-exec-4] HHH000397: Using ASTQueryTranslatorFactory
+2019-06-06 12:47:28,092 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User with login pawel and email pawel@pawel.com was found in database
+2019-06-06 12:47:28,095 INFO c.p.s.v.LoginUser [http-nio-8080-exec-9] User started logging in with following credentials pawel pawel@pawel.com
+2019-06-06 12:47:28,097 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User with login: pawel was looked in database
+2019-06-06 12:47:28,107 INFO c.p.s.v.SecurePage [http-nio-8080-exec-9] User pawel has opened user's page
+2019-06-06 12:47:30,823 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with login: pawel was looked in database
+2019-06-06 12:47:30,838 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with ID: 1 was looked in database
+2019-06-06 12:47:30,858 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User: pawel has updated profile
+2019-06-06 12:47:30,906 INFO c.p.s.v.SecurePage [http-nio-8080-exec-3] User pawel has deleted lecture Alcohol use and burden for 195 countries and territories, 1990–2016: a systematic analysis for the Global Burden of Disease Study 2016
+2019-06-06 12:47:30,907 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with login: pawel was looked in database
+2019-06-06 12:47:30,915 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with login: pawel was looked in database
+2019-06-06 12:47:30,921 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with ID: 1 was looked in database
+2019-06-06 12:47:30,925 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User: pawel has updated profile
+2019-06-06 12:47:30,928 INFO c.p.s.v.SecurePage [http-nio-8080-exec-3] User pawel has deleted lecture The biomass distribution on Earth
+2019-06-06 12:47:30,929 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-3] User with login: pawel was looked in database
+2019-06-06 12:47:31,069 INFO c.p.s.v.SecurePage [http-nio-8080-exec-6] User pawel has opened user's page
+2019-06-06 12:47:47,275 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User with login: pawel was looked in database
+2019-06-06 12:47:47,284 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User: pawel has added lecture: Alcohol use and burden for 195 countries and territories, 1990–2016: a systematic analysis for the Global Burden of Disease Study 2016
+2019-06-06 12:47:47,301 INFO c.p.s.f.u.s.UserService [http-nio-8080-exec-9] User with login: pawel was looked in database
+2019-06-06 12:47:47,310 INFO c.p.s.f.e.EmailSender [http-nio-8080-exec-9] Email to pawel@pawel.com has been sent.
+2019-06-06 12:47:47,521 INFO c.p.s.v.SecurePage [http-nio-8080-exec-1] User pawel has opened user's page
+2019-06-06 12:56:52,713 INFO o.s.s.c.ExecutorConfigurationSupport [Thread-2] Shutting down ExecutorService 'applicationTaskExecutor'
+2019-06-06 12:56:52,719 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-2] Closing JPA EntityManagerFactory for persistence unit 'default'
+2019-06-06 12:56:52,723 INFO c.z.h.HikariDataSource [Thread-2] HikariPool-1 - Shutdown initiated...
+2019-06-06 12:56:53,233 INFO c.z.h.HikariDataSource [Thread-2] HikariPool-1 - Shutdown completed.

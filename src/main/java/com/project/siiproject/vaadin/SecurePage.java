@@ -117,7 +117,6 @@ public class SecurePage extends VerticalLayout implements View {
                     User userLectureToSave = userService.getUserByLogin(user.getLogin());
                     try {
                         userService.addNewLecture(userLectureToSave, selectedLecture);
-                        LOG.info("User " + user.getLogin() + " has enrolled for " + selectedLecture);
                         VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
                         emailSender.sendEmail(user.getEmail(), "Zapisy na konferencję 01-02.06.2019",
                                 "Serdecznie zapraszamy na wykład: " + selectedLecture.getTitle() + ", dnia" +
@@ -127,7 +126,6 @@ public class SecurePage extends VerticalLayout implements View {
                     } catch (IllegalStateException e) {
                         mainGrid.deselectAll();
                         Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
-                        LOG.warn("User " + user.getLogin() + " has tired to enroll for " + selectedLecture + " but failed.");
                     } catch (IOException e) {
                         Notification.show("Wysłanie maila się niepowiodło");
                         LOG.warn("Confirmation email was not send to " + user.getLogin());
@@ -177,7 +175,7 @@ public class SecurePage extends VerticalLayout implements View {
         setCaption("Zalogowany użytkownik : " + user.getLogin().toString());
 
         if (user != null) {
-            LOG.info("User " + user.getLogin() + " logged in.");
+            LOG.info("User " + user.getLogin() + " has opened user's page");
             email.setValue(user.getEmail());
 
             grid.setItems(user.getLectures());
