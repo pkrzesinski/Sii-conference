@@ -59,7 +59,7 @@ public class SecurePage extends VerticalLayout implements View {
                     LOG.info("User: {} has changed email.", user.getLogin());
                 } catch (IllegalStateException e) {
                     Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
-                    LOG.warn("Illegal State Exception occurred" + e);
+                    LOG.warn("User: {} has tried to change email, but failed. ", user.getLogin() + e);
                 }
             } else {
                 Notification.show("Błędny format adresu email!", Notification.Type.ERROR_MESSAGE);

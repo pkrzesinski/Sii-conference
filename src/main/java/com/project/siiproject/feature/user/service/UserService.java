@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,14 +53,13 @@ public class UserService {
         throw new IllegalStateException();
     }
 
-    public User addNewLecture(User user, Lecture lecture) {
-        List<Lecture> usersLecture = user.getLectures();
-        LocalDateTime lectureTime = lecture.getLectureDate();
-        Optional<Lecture> lectureOptional = usersLecture.stream()
+    public void addNewLecture(User user, Lecture lecture) {
+
+        Optional<Lecture> lectureOptional = user.getLectures().stream()
                 .filter(lecture::equals)
                 .findFirst();
-        Optional<Lecture> lectureAtTheSameTime = usersLecture.stream()
-                .filter(l -> l.getLectureDate().isEqual(lectureTime))
+        Optional<Lecture> lectureAtTheSameTime = user.getLectures().stream()
+                .filter(l -> l.getLectureDate().isEqual(lecture.getLectureDate()))
                 .findFirst();
 
         if (lectureOptional.isPresent() || lectureAtTheSameTime.isPresent() || isLectureFull(lecture)) {
@@ -70,7 +68,7 @@ public class UserService {
         } else {
             user.getLectures().add(lecture);
             LOG.info("User: {} has enrolled for lecture: {}", user.getLogin(), lecture.getTitle());
-            return userRepository.save(user);
+            update(user);
         }
     }
 
@@ -92,15 +90,15 @@ public class UserService {
         throw new IllegalStateException();
     }
 
-    public User emailUpdate(User user) {
+    public void emailUpdate(User user) {
         if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user)) {
-            User updateUser = getUserByLogin(user.getLogin());
-            updateUser.setEmail(user.getEmail());
+            user.setEmail(user.getEmail());
             LOG.info("User {} has changed email address.", user.getLogin());
-            return userRepository.save(updateUser);
+            userRepository.save(user);
+        } else {
+            LOG.warn("User: {} has tired to changed email address, but failed.", user.getLogin());
+            throw new IllegalStateException();
         }
-        LOG.warn("User: {} has tired to changed email address, but failed.", user.getLogin());
-        throw new IllegalStateException();
     }
 
     public void delete(final User user) {
