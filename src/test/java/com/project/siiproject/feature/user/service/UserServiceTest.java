@@ -109,7 +109,7 @@ public class UserServiceTest {
         when(userRepository.getOne(Mockito.any())).thenReturn(user);
         when(userRepository.findByEmail(Mockito.anyString())).thenReturn(user);
         //when
-        classUnderTest.emailUpdate(user);
+        classUnderTest.emailUpdate(user, "new@email.com");
         //then
     }
 
