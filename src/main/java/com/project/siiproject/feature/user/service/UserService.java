@@ -1,5 +1,6 @@
 package com.project.siiproject.feature.user.service;
 
+import com.project.siiproject.feature.emailsender.EmailSender;
 import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.user.dao.UserRepository;
 import com.project.siiproject.feature.user.model.User;
@@ -9,16 +10,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional
 public class UserService {
 
     private static final Logger LOG = LogManager.getLogger(UserService.class);
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private final UserRepository userRepository;
+    private EmailSender emailSender = new EmailSender();
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -55,13 +62,12 @@ public class UserService {
     }
 
     public User addNewLecture(User user, Lecture lecture) {
-        List<Lecture> usersLecture = user.getLectures();
-        LocalDateTime lectureTime = lecture.getLectureDate();
-        Optional<Lecture> lectureOptional = usersLecture.stream()
+
+        Optional<Lecture> lectureOptional = user.getLectures().stream()
                 .filter(lecture::equals)
                 .findFirst();
-        Optional<Lecture> lectureAtTheSameTime = usersLecture.stream()
-                .filter(l -> l.getLectureDate().isEqual(lectureTime))
+        Optional<Lecture> lectureAtTheSameTime = user.getLectures().stream()
+                .filter(l -> l.getLectureDate().isEqual(lecture.getLectureDate()))
                 .findFirst();
 
         if (lectureOptional.isPresent() || lectureAtTheSameTime.isPresent() || isLectureFull(lecture)) {
@@ -70,7 +76,10 @@ public class UserService {
         } else {
             user.getLectures().add(lecture);
             LOG.info("User: {} has enrolled for lecture: {}", user.getLogin(), lecture.getTitle());
-            return userRepository.save(user);
+            emailSender.sendEmail(user.getEmail(), "Zapisy na konferencję 01-02.06.2019",
+                    "Serdecznie zapraszamy na wykład: " + lecture.getTitle() + ", dnia" +
+                            lecture.getLectureDate().format(formatter) + "\nDo zobaczenia!");
+            return update(user);
         }
     }
 
@@ -92,20 +101,28 @@ public class UserService {
         throw new IllegalStateException();
     }
 
-    public User emailUpdate(User user) {
-        if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user)) {
-            User updateUser = getUserByLogin(user.getLogin());
-            updateUser.setEmail(user.getEmail());
+    public User emailUpdate(User user, String newEmail) {
+        if (isUserLoginWithoutChange(user) && !isEmailAlreadyInDataBase(user) && isEmailValid(newEmail)) {
+            user.setEmail(newEmail);
             LOG.info("User {} has changed email address.", user.getLogin());
-            return userRepository.save(updateUser);
+            return userRepository.save(user);
+        } else {
+            LOG.warn("User: {} has tired to changed email address, but failed.", user.getLogin());
+            throw new IllegalStateException();
         }
-        LOG.warn("User: {} has tired to changed email address, but failed.", user.getLogin());
-        throw new IllegalStateException();
     }
 
     public void delete(final User user) {
         userRepository.delete(user);
         LOG.warn("User: {} has been deleted.", user.getLogin());
+    }
+
+    public User lectureToRemove(User user, Lecture lecture) {
+        List<Lecture> newList = user.getLectures();
+        newList.removeIf(lectureRemove -> lectureRemove.getTitle().equals(lecture.getTitle()));
+        user.setLectures(newList);
+        LOG.info("User: {} has removed lecture {}.", user.getLogin(), lecture.getTitle());
+        return update(user);
     }
 
     private boolean isUserAlreadyInDatabase(User user) {
@@ -128,5 +145,10 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    private boolean isEmailValid(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
     }
 }

@@ -3,13 +3,13 @@ package com.project.siiproject.vaadin;
 import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
 import com.vaadin.navigator.View;
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.annotation.PrototypeScope;
 
 import javax.validation.ConstraintViolationException;
@@ -22,6 +22,7 @@ public class LoginUser extends VerticalLayout implements View {
     private VerticalLayout layout;
     private UserService userService;
 
+    @Autowired
     public LoginUser(UserService userService) {
         this.userService = userService;
         setupLayout();
@@ -69,41 +70,37 @@ public class LoginUser extends VerticalLayout implements View {
 
         buttonLogin.addClickListener(clickEvent -> {
             try {
-                userService.getUserByLoginAndEmail(login.getValue(), email.getValue());
-                LOG.info("User started logging in with following credentials " + login.getValue() + " " + email.getValue());
-                VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(login.getValue()));
-                getUI().getNavigator().navigateTo(SecurePage.VIEW_NAME);
+                User user = userService.getUserByLoginAndEmail(login.getValue(), email.getValue());
+                navigateSecurePage(user);
                 Notification notification = Notification.show("Użytkownik zalogowany");
             } catch (IllegalStateException e) {
                 Notification notification = Notification.show("Błąd logowania, sprawdź login i/lub email.",
                         Notification.Type.ERROR_MESSAGE);
-                LOG.warn("User failed to log in with following credentials " + login.getValue() + " " + email.getValue());
+                LOG.warn("User: {} failed to log in", login.getValue() + e);
             } catch (ConstraintViolationException e) {
                 Notification.show("Dane wpisane niepoprawnie !", Notification.Type.ERROR_MESSAGE);
-                LOG.error("User with following credentials has violated database constraints " + login.getValue() + " " + email.getValue());
+                LOG.error("New user creating account violated database constraints: {}, {} ", login.getValue(),
+                        email.getValue() + e);
             }
-            login.clear();
-            email.clear();
-            login.focus();
         });
 
         buttonAddUser.addClickListener(clickEvent -> {
             try {
-                userService.save(new User(login.getValue(), email.getValue()));
-                LOG.info("New user added " + login.getValue() + " " + email.getValue());
-                VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(login.getValue()));
-                getUI().getNavigator().navigateTo(SecurePage.VIEW_NAME);
+                User user = userService.save(new User(login.getValue(), email.getValue()));
+                navigateSecurePage(user);
                 Notification notification = Notification.show("Użytkownik o loginie " + login.getValue() + " i email + "
                         + email.getValue() + " został pomyślnie zapisany");
-                Page.getCurrent().reload();
             } catch (IllegalStateException e) {
                 Notification.show("Użytkownik o podanym loginie i/lub email jest już zarejestrowany.", Notification.Type.ERROR_MESSAGE);
-                LOG.warn("New user failed to create account " + login.getValue() + " " + email.getValue());
             } catch (ConstraintViolationException e) {
                 Notification.show("Dane wpisane niepoprawnie !", Notification.Type.ERROR_MESSAGE);
-                LOG.error("New user creating account violated database constraints " + login.getValue() + " " + email.getValue());
+                LOG.error("New user creating account violated database constraints: {}, {} ", login.getValue(), email.getValue() + e);
             }
-            login.focus();
         });
+    }
+
+    private void navigateSecurePage(User user) {
+        VaadinSession.getCurrent().setAttribute("user", user);
+        getUI().getNavigator().navigateTo(SecurePage.VIEW_NAME);
     }
 }

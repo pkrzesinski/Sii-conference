@@ -1,6 +1,5 @@
 package com.project.siiproject.vaadin;
 
-import com.project.siiproject.feature.emailsender.EmailSender;
 import com.project.siiproject.feature.lecture.model.Lecture;
 import com.project.siiproject.feature.user.model.User;
 import com.project.siiproject.feature.user.service.UserService;
@@ -15,26 +14,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.vaadin.spring.annotation.PrototypeScope;
 
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @PrototypeScope
 @SpringView(name = SecurePage.VIEW_NAME)
 public class SecurePage extends VerticalLayout implements View {
 
     private static final Logger LOG = LogManager.getLogger(SecurePage.class);
-    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final String VIEW_NAME = "userPage";
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
     private User user;
     private VerticalLayout layout = new VerticalLayout();
     private Grid<Lecture> grid = new Grid<>();
     private TextField email = new TextField("Email");
-    private EmailSender emailSender = new EmailSender();
 
     public SecurePage(UserService userService, Grid<Lecture> mainGrid) {
         setupLayout();
@@ -51,19 +43,12 @@ public class SecurePage extends VerticalLayout implements View {
         buttonChangeEmail.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         buttonChangeEmail.addClickListener(clickEvent -> {
-            if (emailValidate(email.getValue())) {
-                try {
-                    user.setEmail(email.getValue());
-                    userService.emailUpdate(user);
-                    Notification.show("Adres email został zmienniony");
-                    LOG.info("User: {} has changed email.", user.getLogin());
-                } catch (IllegalStateException e) {
-                    Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
-                    LOG.warn("Illegal State Exception occurred" + e);
-                }
-            } else {
-                Notification.show("Błędny format adresu email!", Notification.Type.ERROR_MESSAGE);
-                LOG.warn("User: {} has tried to change email address, but wrong format was inserted.", user.getLogin());
+            try {
+                User userUpdatedEmail = userService.emailUpdate(user, email.getValue());
+                updateSession(userUpdatedEmail);
+                Notification.show("Adres email został zmienniony");
+            } catch (IllegalStateException e) {
+                Notification.show("Podany adres jest już zajęty !", Notification.Type.ERROR_MESSAGE);
             }
         });
 
@@ -75,24 +60,15 @@ public class SecurePage extends VerticalLayout implements View {
         buttonRemoveLecture.addStyleName(ValoTheme.BUTTON_DANGER);
 
         buttonRemoveLecture.addClickListener(clickEvent -> {
-
             Lecture selectedLectureToBeRemoved = grid.asSingleSelect().getValue();
+
             if (selectedLectureToBeRemoved != null) {
-
-                User userLectureToBeRemoved = userService.getUserByLogin(user.getLogin());
                 try {
-                    List<Lecture> newList = userLectureToBeRemoved.getLectures();
-                    newList.removeIf(lecture -> lecture.getTitle().equals(selectedLectureToBeRemoved.getTitle()));
-
-                    user.setLectures(newList);
-                    userService.update(user);
-
-                    LOG.info("User: {} has deleted lecture {}.", user.getLogin(), selectedLectureToBeRemoved.getTitle());
-
-                    VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
-                    Page.getCurrent().reload();
+                    User userRemovedLecture = userService.lectureToRemove(user, selectedLectureToBeRemoved);
+                    updateSession(userRemovedLecture);
                 } catch (IllegalStateException e) {
                     Notification.show("Nie można usunąć", Notification.Type.ERROR_MESSAGE);
+                    LOG.warn("User: {} unable to remove lecture {} ", user.getLogin(), selectedLectureToBeRemoved.getTitle());
                 } finally {
                     grid.deselectAll();
                 }
@@ -106,20 +82,11 @@ public class SecurePage extends VerticalLayout implements View {
             Lecture selectedLecture = mainGrid.asSingleSelect().getValue();
 
             if (selectedLecture != null) {
-
-                User userLectureToSave = userService.getUserByLogin(user.getLogin());
                 try {
-                    userService.addNewLecture(userLectureToSave, selectedLecture);
-                    VaadinSession.getCurrent().setAttribute("user", userService.getUserByLogin(user.getLogin()));
-                    emailSender.sendEmail(user.getEmail(), "Zapisy na konferencję 01-02.06.2019",
-                            "Serdecznie zapraszamy na wykład: " + selectedLecture.getTitle() + ", dnia" +
-                                    selectedLecture.getLectureDate().format(formatter) + "\nDo zobaczenia!");
-                    Page.getCurrent().reload();
+                    User userNewLecture = userService.addNewLecture(user, selectedLecture);
+                    updateSession(userNewLecture);
                 } catch (IllegalStateException e) {
                     Notification.show("Nie można zapisać danego wykładu", Notification.Type.ERROR_MESSAGE);
-                } catch (IOException e) {
-                    Notification.show("Wysłanie maila się nie powiodło");
-                    LOG.warn("Confirmation email was not send to {}", user.getLogin());
                 } finally {
                     mainGrid.deselectAll();
                 }
@@ -128,6 +95,11 @@ public class SecurePage extends VerticalLayout implements View {
 
         buttonsUnderGrid.addComponents(buttonAddLectureToUser, buttonRemoveLecture);
         layout.addComponents(formLayout, grid, buttonsUnderGrid);
+    }
+
+    private void updateSession(User user) {
+        VaadinSession.getCurrent().setAttribute("user", user);
+        Page.getCurrent().reload();
     }
 
     private void setupLayout() {
@@ -142,7 +114,7 @@ public class SecurePage extends VerticalLayout implements View {
         buttonLogout.addStyleName(ValoTheme.BUTTON_DANGER);
 
         buttonLogout.addClickListener(clickEvent -> {
-            LOG.info("User " + user.getLogin() + " logged out.");
+            LOG.info("User: {} logged out.", user.getLogin());
             VaadinSession.getCurrent().setAttribute("user", null);
             getUI().getNavigator().navigateTo("");
         });
@@ -168,7 +140,7 @@ public class SecurePage extends VerticalLayout implements View {
         setCaption("Zalogowany użytkownik : " + user.getLogin().toString());
 
         if (user != null) {
-            LOG.info("User " + user.getLogin() + " has opened user's page");
+            LOG.info("User {} has opened user's page", user.getLogin());
             email.setValue(user.getEmail());
 
             grid.setItems(user.getLectures());
@@ -177,10 +149,5 @@ public class SecurePage extends VerticalLayout implements View {
             grid.addColumn(Lecture::getPath).setCaption("Ścieżka").setWidthUndefined();
             grid.addColumn(Lecture::getTitle).setCaption("Temat wykładu").setWidthUndefined();
         }
-    }
-
-    private boolean emailValidate(String emailStr) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-        return matcher.find();
     }
 }
