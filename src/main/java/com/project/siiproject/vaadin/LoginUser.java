@@ -94,7 +94,7 @@ public class LoginUser extends VerticalLayout implements View {
                 Notification.show("Użytkownik o podanym loginie i/lub email jest już zarejestrowany.", Notification.Type.ERROR_MESSAGE);
             } catch (ConstraintViolationException e) {
                 Notification.show("Dane wpisane niepoprawnie !", Notification.Type.ERROR_MESSAGE);
-                LOG.error("New user creating account violated database constraints: {}, {} ", login.getValue(), email.getValue());
+                LOG.error("New user creating account violated database constraints: {}, {} ", login.getValue(), email.getValue() + e);
             }
         });
     }
