@@ -5,4 +5,4 @@ The application is a conference enrollment simulator, which allows to add new us
 Application is deployed on a Heroku could-serivice and is available under following link: https://sii-conference.herokuapp.com/ or can be ran as a standard Java Jar application.
 
 ## Build with
-Java 8+, Spring Boot, Hibernate, in-memory H2 database, Vaadin 8, Maven, Junit, Mockito, Swagger
+Java 8, Spring Boot, Hibernate, in-memory H2 database, Vaadin 8, Maven, Junit, Mockito
